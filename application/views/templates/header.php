@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $current_user_id = $this->session->userdata('user_id');
 $page = $this->session->userdata('page');
-var_dump($_SESSION)
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +24,7 @@ var_dump($_SESSION)
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="/"><i class="fas fa-hotel"></i> Hotel Casarosa</a>
+        <a class="navbar-brand ps-3" href="/dashboard/dashboard"><i class="fas fa-hotel"></i> Hotel Casarosa</a>
 <?php
         if(!$current_user_id) { 
         }
@@ -42,12 +41,10 @@ var_dump($_SESSION)
         <div class="subnavbar-inner">
             <div class="container">
                 <ul class="mainnav">
-                <li <?= ($page === 'dashboard') ? 'class="active"' : '' ?> ><a href="/"><i class="fas fa-dashboard"></i><span>Dashboard</span> </a> </li>
-                <li <?= ($page === 'employee') ? 'class="active"' : '' ?> ><a href="/dashboard/employee"><i class="fas fa-user"></i><span>Employees</span> </a> </li>
+                <li <?= ($page === 'dashboard') ? 'class="active"' : '' ?> ><a href="/dashboard/dashboard"><i class="fas fa-dashboard"></i><span>Dashboard</span> </a> </li>
                 <li <?= ($page === 'reservation') ? 'class="active"' : '' ?> ><a href="/dashboard/reservation"><i class="fas fa-list-alt"></i><span>Reservation</span> </a> </li>
                 <li <?= ($page === 'rooms') ? 'class="active"' : '' ?> ><a href="/dashboard/rooms"><i class="fas fa-bed"></i><span>Rooms</span> </a> </li>
                 <li <?= ($page === 'inventory') ? 'class="active"' : '' ?> ><a href="/dashboard/inventory"><i class="fas fa-warehouse"></i><span>Inventory</span> </a> </li>
-                <li <?= ($page === 'kitchen') ? 'class="active"' : '' ?> ><a href="/dashboard/kitchen"><i class="fas fa-utensils"></i><span>Kitchen</span> </a> </li>
                 </ul>
             </div>
         </div>
