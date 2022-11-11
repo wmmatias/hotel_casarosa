@@ -288,6 +288,15 @@ class Reservation extends CI_Model {
             $this->security->xss_clean($id)));
     }
 
+    public function check_out($id){
+        $status = '3';
+        return $this->db->query("UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?", 
+        array(
+            $this->security->xss_clean($status), 
+            $this->security->xss_clean(date("Y-m-d, H:i:s")),
+            $this->security->xss_clean($id)));
+    }
+
     public function no_guest_id($id){
         $query = ("SELECT id, sum(adult + children + x_person) as total_guest
         FROM fmitr_casarosa.reservations

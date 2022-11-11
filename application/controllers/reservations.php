@@ -100,4 +100,17 @@ class Reservations extends CI_Controller {
         $this->session->set_flashdata('arrived', 'The guest arrived!');
         redirect('dashboard/reservation');
     }
+
+    public function check_out($id){
+        $this->reservation->check_out($id);
+        $this->session->set_flashdata('check_out', 'The guest check out!');
+        redirect('dashboard/reservation');
+    }
+    
+    public function check_availability(){
+        $this->session->set_userdata(array('page'=> 'reservation'));
+            $this->load->view('templates/header');
+            $this->load->view('admin/reservation_availability');
+            $this->load->view('templates/footer');
+    }
 }

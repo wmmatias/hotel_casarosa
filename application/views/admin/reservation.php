@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="card-header">
                         <i class="fas fa-list-alt me-1"></i>
                         Reservation
-                        <a class="float-end" href=""><i class="fas fa-add"></i> Add</a>
+                        <a class="float-end" href="/reservations/check_availability"><i class="fas fa-add"></i> Check Availability</a>
                     </div>
                     <div class="card-body">
 <?php	                if(!$this->session->flashdata('arrived')){
@@ -16,6 +16,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                else{
 ?>		                    <div class="alert alert-dismissible fade show alert-success" role="alert">
                                 <?=$this->session->flashdata('arrived');?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+<?php	                }
+?>
+<?php	                if(!$this->session->flashdata('check_out')){
+		                }
+		                else{
+?>		                    <div class="alert alert-dismissible fade show alert-success" role="alert">
+                                <?=$this->session->flashdata('check_out');?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
 <?php	                }

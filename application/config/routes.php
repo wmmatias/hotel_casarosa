@@ -76,4 +76,5 @@ $route['reservations/validate'] = 'reservations/reserve_proccess';
 $route['reservations/show/(:any)'] = 'reservations/room_show/$1';
 $route['reservations/create'] = 'reservations/create_reservation';
 $route['reservations/arrived/(:any)'] = 'reservations/arrived/$1';
-// $route['reservations/create'] = 'reservations/create_reservation';
+$route['reservation/check_out/(:any)'] = 'reservations/check_out/$1';
+$route['reservations/check_availability'] = 'reservations/check_availability';
