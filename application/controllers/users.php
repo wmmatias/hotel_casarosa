@@ -2,10 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends CI_Controller {
-    
-    /*  DOCU: This function is triggered by default which displays the sign in/dashboard.
-        Owner: 
-    */
+   
     public function index() 
     {   
         $current_user_id = $this->session->userdata('user_id');
@@ -19,9 +16,6 @@ class Users extends CI_Controller {
         }
     }
 
-    // /*  DOCU: This function is triggered to display registration page if there's no user session yet.
-    //     Owner: 
-    // */
     public function register() 
     {
         $current_user_id = $this->session->userdata('user_id');
@@ -34,20 +28,12 @@ class Users extends CI_Controller {
         }
     }
 
-    /*  DOCU: This function logs out the current user then goes to sign in page.
-        Owner: Wilard
-    */
     public function logoff() 
     {
         $this->session->sess_destroy();
         redirect("/");   
     }
-    
-    /*  DOCU: This function is triggered when the sign in button is clicked. 
-        This validates the required form inputs and if user password matches in the database by given email.
-        If no problem occured, user will be routed to the dashboard.
-        Owner: Wilard
-    */
+
     public function process_signin() 
     {
         $result = $this->user->validate_signin_form();
@@ -66,7 +52,7 @@ class Users extends CI_Controller {
             {   
                 $is_admin = $this->user->validate_is_admin($email);
                 if(!empty($is_admin)){
-                    $this->session->set_userdata(array('user_id'=>$user['id'], 'auth' => true, 'page'=> 'dashboard'));
+                    $this->session->set_userdata(array('user_id'=>$user['id'], 'fullname'=>$user['first_name'].' '.$user['last_name'],'auth' => true, 'page'=> 'dashboard'));
                     redirect("dashboard");
                 }
                 else{
@@ -82,37 +68,44 @@ class Users extends CI_Controller {
         }
 
     }
-    
-    // /*  DOCU: This function is triggered when the register button is clicked. 
-    //     This validates the required form inputs then checks if the email is already taken. 
-    //     If no problem occured, user information will be stored in database 
-    //     and said user will be routed to the dashboard.
-    //     Owner: Wilard
-    // */
-    public function process_registration() 
+
+    public function adding_user_proccess() 
     {   
         $email = $this->input->post('email');
-        $result = $this->user->validate_registration($email);
-        if($result!=null)
-        {
-            $this->session->set_flashdata('input_errors', $result);
-            redirect("register");
+        $form_data = $this->input->post();
+        if($this->input->post('userlevel') === '3'){
+            $this->session->set_flashdata('userlevel', 'Please select User Level');
+                redirect('/dashboard/employee');
         }
-        else
-        {
-            $form_data = $this->input->post();
-            $this->user->create_user($form_data);
-
-            $new_user = $this->user->get_user_by_email($form_data['email']);
-            $this->session->set_userdata(array('user_id' => $new_user["id"], 'first_name'=>$new_user['first_name']));
-            
-            redirect("dashboard");
+        else{
+            $result = $this->user->validate_creation();
+            if($result!= 'success')
+            {
+                $this->session->set_flashdata('rooms_error', $result);
+                $res = $this->user->get_users();
+                $data = array('datas'=>$res);
+                $this->session->set_userdata(array('page'=> 'employee'));
+                $this->load->view('templates/header');
+                $this->load->view('admin/employee', $data);
+                $this->load->view('templates/footer');
+            }
+            else
+            {
+                $check_email = $this->user->get_user_by_email($email);
+                if(!$check_email){
+                    $this->user->create_user($form_data);
+                    $this->session->set_flashdata('success', 'Successfully Created!');
+                    redirect('/dashboard/employee');
+                }
+                else{
+                    $this->session->set_flashdata('error', 'Email already taken!');
+                    redirect('/dashboard/employee');
+                }
+                
+            }
         }
     }
 
-    /*  DOCU: This function loads the details of current user in profile page.
-        Owner: Wilard
-    */
     public function profile() 
     {   
         $user_id = $this->session->user_id;
@@ -122,31 +115,39 @@ class Users extends CI_Controller {
         $this->load->view('users/edit',$details); 
     }
 
-    /*  DOCU: This function validate the user information.
-        Owner: Wilard
-    */
+ 
     public function edit_information_process() 
     {   
-        $result = $this->user->validate_information();
-        if($result != 'success') {
-            $this->session->set_flashdata('input_errors', $result);
-            redirect("users/edit");
-        } 
-        else
-        {
-            $form_data = $this->input->post();
-            $this->user->update_userinformation($form_data);
-            $this->session->set_flashdata('success','The user information successfully modified');
-            redirect("users/edit");
+        $email = $this->input->post('email');
+        $id = $this->input->post('id');
+        $form_data = $this->input->post();
+        if($this->input->post('userlevel') === '3'){
+            $this->session->set_flashdata('userlevel', 'Please select User Level');
+                redirect('/dashboard/employee_edit');
+        }
+        else{
+            $result = $this->user->validate_information();
+            if($result != 'success') {
+                $this->session->set_flashdata('input_errors', $result);
+                $res = $this->user->get_users();
+                $details = $this->user->get_user_details($id);
+                $data = array('datas'=>$res, 'details'=>$details);
+                $this->session->set_userdata(array('page'=> 'employee'));
+                $this->load->view('templates/header');
+                $this->load->view('admin/employee_edit', $data);
+                $this->load->view('templates/footer');
+            } 
+            else
+            {
+                $this->user->update_userinformation($form_data);
+                $this->session->set_flashdata('success','The user information successfully modified');
+                redirect("dashboard/employee");
+            }
         }
     }
-    
-    /*  DOCU: This function validate the user credentials input.
-        Owner: Wilard
-    */
+
     public function edit_credentials() 
     {   
-        $this->output->enable_profiler(TRUE);
         $checkpassword = $this->input->post();
         $result = $this->user->validate_change_password($checkpassword);
         if(!empty($result)) {
@@ -160,6 +161,13 @@ class Users extends CI_Controller {
             $this->session->set_flashdata('successc','your credential successfully update');
             redirect("users/edit");
         }
+    }
+
+    public function delete_users($id) 
+    {
+        $this->user->delete_user($id);
+        $this->session->set_flashdata('success', 'Successfully Deleted!');
+        redirect('/dashboard/employee');
     }
     
 }

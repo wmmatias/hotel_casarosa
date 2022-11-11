@@ -54,7 +54,7 @@ img{
 
 /* header */
 .header{
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), url("../images/banner-img.jpg") center/cover no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), url("/assets/images/lobby.jpg") center/cover no-repeat;
     min-height: 100vh;
     color: #fff;
     padding: 25px;
@@ -155,9 +155,10 @@ img{
     opacity: 0.7;
 }
 .navbar{
-    margin-top: 50px;
+    /* margin-top: 50px; */
     list-style: none;
     padding: 12px;
+    background-color: #292826;
 }
 .navbar li a{
     color: #fff;
@@ -165,7 +166,6 @@ img{
     text-decoration: none;
     padding: 15px 0;
     display: block;
-    border-bottom: 0.5px solid rgba(249, 211, 66, 0.3);
     opacity: 0.8;
     letter-spacing: 1.5px;
     transition: var(--transition);
@@ -177,9 +177,20 @@ img{
     background: var(--yellow);
     color: #fff;
 }
-@media(max-width: 400px){
+@media(max-width: 500px){
     .sidenav{
         width: 100vw;
+    }
+    .navbar li a{
+    color: #fff;
+    text-transform: capitalize;
+    text-decoration: none;
+    padding: 15px 0;
+    display: block;
+    opacity: 0.8;
+    letter-spacing: 1.5px;
+    transition: var(--transition);
+    border-bottom: 0.5px solid rgba(249, 211, 66, 0.3);
     }
 }
 
@@ -269,7 +280,7 @@ img{
     word-spacing: 5px;
     padding-bottom: 8px;
 }
-.book-form input:not(.btn){
+.book-form input:not(.btn), .book-form select:not(.btn){
     margin: 4px 0 16px 0;
     padding: 12px 15px;
     border-radius: 5px;
@@ -524,4 +535,9 @@ img{
     bottom: 0;
     left: 0;
     z-index: 5;
+}
+
+.room_img{
+    /* width: 50px; */
+    height: 600px;
 }

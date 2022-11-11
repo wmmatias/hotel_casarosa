@@ -63,3 +63,17 @@ $route['dashboard/rooms'] = 'dashboard/rooms';
 $route['dashboard/inventory'] = 'dashboard/inventory';
 $route['dashboard/kitchen'] = 'dashboard/kitchen';
 $route['dashboard/dashboard'] = 'dashboard';
+
+$route['rooms/validate'] = 'rooms/adding_rooms_proccess';
+$route['rooms/delete/(:any)'] = 'rooms/delete_rooms/$1';
+
+$route['users/validate'] = 'users/adding_user_proccess';
+$route['users/delete/(:any)'] = 'users/delete_users/$1';
+$route['users/edit/(:any)'] = 'dashboard/employee_edit/$1';
+$route['users/validate_edit'] = 'users/edit_information_process';
+
+$route['reservations/validate'] = 'reservations/reserve_proccess';
+$route['reservations/show/(:any)'] = 'reservations/room_show/$1';
+$route['reservations/create'] = 'reservations/create_reservation';
+$route['reservations/arrived/(:any)'] = 'reservations/arrived/$1';
+// $route['reservations/create'] = 'reservations/create_reservation';

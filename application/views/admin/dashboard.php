@@ -10,33 +10,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         Upcoming Guest
                     </div>
                     <div class="card-body">
-                        <table id="upcoming">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Room</th>
-                                    <th>Contact No</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Juan Dela Cruz</td>
-                                    <td>10/01/2022</td>
-                                    <td>10/03/2022</td>
-                                    <td>Regular</td>
-                                    <td>090909090909</td>
-                                </tr>
-                                <tr>
-                                    <td>Juan Tamad</td>
-                                    <td>11/24/2022</td>
-                                    <td>11/23/2022</td>
-                                    <td>Regular</td>
-                                    <td>090909090909</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="upcoming" class="table table-striped table-bordered table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Room</th>
+                                        <th>Check In</th>
+                                        <th>Check Out</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+<?php                               foreach($upcoming as $data){
+                                    $check_in = date('m-d-Y', strtotime($data['check_in']));
+                                    $check_out = date('m-d-Y', strtotime($data['check_out']));
+?>                                    <tr>
+                                        <td><?= $data['first_name'].' '.$data['last_name']?></td>
+                                        <td><?= $data['phone']?></td>
+                                        <td><?= $data['room_number']?></td>
+                                        <td><?= $check_in?></td>
+                                        <td><?= $check_out?></td>
+                                    </tr>
+<?php                               }
+?>                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,32 +46,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         Guest Today
                     </div>
                     <div class="card-body">
-                        <table id="current">
+                        <table id="current" class="table table-striped table-bordered table-hover text-nowrap">
                             <thead>
                                 <tr>
                                     <th>Name</th>
                                     <th>Room #</th>
                                     <th>Number of guest</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>102</td>
-                                    <td>1</td>
-                                    <td>09/27/2022</td>
-                                    <td>09/27/2022</td>
+<?php                           foreach($current as $data){
+                                $check_in = date('m-d-Y', strtotime($data['check_in']));
+                                $check_out = date('m-d-Y', strtotime($data['check_out']));
+?>                                <tr>
+                                    <td><?=$data['first_name'].' '.$data['last_name']?></td>
+                                    <td><?=$data['room_number']?></td>
+                                    <td><?=$data['no_guest']?></td>
+                                    <td><?=$check_in?></td>
+                                    <td><?=$check_out?></td>
                                 </tr>
-                                <tr>
-                                    <td>Garrett Winters</td>
-                                    <td>202</td>
-                                    <td>2</td>
-                                    <td>09/27/2022</td>
-                                    <td>10/10/2022</td>
-                                </tr>
-                            </tbody>
+<?php                           }
+?>                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -90,31 +86,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Type</th>
+                                    <th>Room Number</th>
+                                    <th>Room Type</th>
                                     <th>Capacity</th>
-                                    <th>Bed</th>
-                                    <th>Room #</th>
                                     <th>Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Twin Room</td>
-                                    <td>Deluxe</td>
-                                    <td>2</td>
-                                    <td>2</td>
-                                    <td>201</td>
-                                    <td>1500</td>
+<?php                           foreach($room as $data){
+?>                                <tr>
+                                    <td><?=$data['name']?></td>
+                                    <td><?=$data['room_number']?></td>
+                                    <td>
+<?php                               if($data['room_type'] === '1'){
+?>                                      Junior Room
+<?php                               }
+                                    elseif($data['room_type'] === '2'){
+?>                                      Standard Room                                        
+<?php                               }
+                                    elseif($data['room_type'] === '3'){
+?>                                      Intermediate Room
+<?php                               }
+                                    elseif($data['room_type'] === '4'){
+?>                                      Twin Room
+<?php                               }
+                                    elseif($data['room_type'] === '5'){
+?>                                      Family Room
+<?php                               }
+?>                                    </td>
+                                    <td><?=($data['room_type'] === '5'? '4':'2')?></td>
+                                    <td>
+<?php                               if($data['room_type'] === '1'){
+?>                                      1,550.00
+<?php                               }
+                                    elseif($data['room_type'] === '2'){
+?>                                      1,650.00                                        
+<?php                               }
+                                    elseif($data['room_type'] === '3'){
+?>                                      1,800.00
+<?php                               }
+                                    elseif($data['room_type'] === '4'){
+?>                                      1,790.00
+<?php                               }
+                                    elseif($data['room_type'] === '5'){
+?>                                      2,495.00
+<?php                               }
+?>                                    
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>Pang Masa</td>
-                                    <td>Regular</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>101</td>
-                                    <td>150</td>
-                                </tr>
-                            </tbody>
+<?php                           }
+?>                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -127,31 +148,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-3">
+                        <div class="col-sm-3">
                                 <div class="stats card-body text-center">
                                     <i class="fas fa-users"></i>
-                                    <h1 class="card-title">0</h1>
-                                    <p>Booked</p>
+                                    <h1 class="card-title"><?=$tbooked['total_booked']?></h1>
+                                    <p>Confirmed</p>
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="stats card-body text-center">
-                                    <i class="fas fa-user"></i>
-                                    <h1 class="card-title">0</h1>
+                                    <i class="fas fa-users"></i>
+                                    <h1 class="card-title"><?=$arrived['total_arrived']?></h1>
+                                    <p>Arrived</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="stats card-body text-center">
+                                    <i class="fas fa-users"></i>
+                                    <h1 class="card-title"><?=$no_guest['total_guest']?></h1>
                                     <p>Guest</p>
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="stats card-body text-center">
-                                    <i class="fas fa-utensils"></i>
-                                    <h1 class="card-title">0</h1>
-                                    <p>Food</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="stats card-body text-center">
                                     <i class="fas fa-bed"></i>
-                                    <h1 class="card-title">0</h1>
+                                    <h1 class="card-title"><?=$no_rooms['total_room']?></h1>
                                     <p>Rooms</p>
                                 </div>
                             </div>

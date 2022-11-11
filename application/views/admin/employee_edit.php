@@ -29,36 +29,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
 <?php	                }
-?>                        <form action="/users/validate" method="post">
+?>                        <form action="/users/validate_edit" method="post">
                             <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>" />
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label for="firstname" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name">
+                                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name" value="<?=$details['first_name']?>">
                                     <?php echo form_error('firstname') ?>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="lastname" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name">
+                                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name" value="<?=$details['last_name']?>">
                                     <?php echo form_error('lastname') ?>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="<?=$details['email']?>" disabled >
                                 <?php echo form_error('email') ?>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="userlevel" class="form-label">User Level</label>
                                 <select name="userlevel" class="form-control" id="userlevel">
                                     <option value="3">--Select User Role--</option>
-                                    <option value="0">Admin</option>
-                                    <option value="1">User</option>
+                                    <option value="0" <?=($details['user_level'] === '0' ? 'selected' : '')?>>Admin</option>
+                                    <option value="1" <?=($details['user_level'] === '1' ? 'selected' : '')?>>User</option>
                                 </select>
                                 <?php echo form_error('userlevel') ?>
                                 <?=$this->session->flashdata('userlevel');?>
                             </div>
-                            <button type="submit" class="btn btn-primary mb-3">Add Room</button>
+                            <div class="row">
+                                <input type="hidden" name="id" value="<?= $details['id']?>">
+                                <div class="col-md-2">
+                                    <a href="/dashboard/employee" class="btn btn-danger mb-3">Cancel Edit</a>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary mb-3">Update User</button>
+                                </div>
+                            </div>
                         </form>
                         <div class="row">
                             <div class="col">
@@ -92,7 +100,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php                                       }                                       
 ?>                                        </td>
                                         <td>
-                                            <a href="/users/edit/<?=$data['id']?>" class="text-xxsm btn btn-primary" tabindex="0" data-toggle="tooltip" data-original-title="Edit" data-placement="left"><i class="fas fa-pen"></i></a>
                                             <a href="/users/delete/<?=$data['id']?>" onclick="return confirm('Are you sure you want to DELETE this?')" class="text-xxsm btn btn-danger" tabindex="0" data-toggle="tooltip" data-original-title="Delete" data-placement="left"><i class="fas fa-trash"></i></a>
                                         </td>
 <?php                           }

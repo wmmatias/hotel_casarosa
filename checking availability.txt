@@ -1,0 +1,9 @@
+SELECT * 
+FROM fmitr_casarosa.rooms 
+WHERE room_type = '5' AND id NOT IN 
+(SELECT room_id 
+    FROM   fmitr_casarosa.reservations
+    WHERE  (check_in <= '2022-11-21 00:00:00' AND check_out >= '2022-11-21 00:00:00' AND status != 3)
+		OR (check_in < '2022-11-22 00:00:00' AND check_out >= '2022-11-22 00:00:00' AND status != 3)
+		OR (check_in <= '2022-11-21 00:00:00' AND check_out >= '2022-11-21 00:00:00' AND status != 3));
+           
