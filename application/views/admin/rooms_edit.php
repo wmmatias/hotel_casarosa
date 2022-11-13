@@ -28,17 +28,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
 <?php	                }
-?>                        <form action="/rooms/validate" method="post">
+?>                        <form action="/rooms/validate_edit" method="post">
                             <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>" />
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label for="room_number" class="form-label">Room Number</label>
-                                    <input type="text" class="form-control" name="room_number" id="room_number" placeholder="Room Number">
+                                    <input type="text" class="form-control" name="room_number" id="room_number" placeholder="Room Number" value="<?=$details['room_number']?>">
                                     <?php echo form_error('room_number') ?>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="room_name" class="form-label">Room Name</label>
-                                    <input type="text" class="form-control" name="room_name" id="room_name" placeholder="Room Name">
+                                    <input type="text" class="form-control" name="room_name" id="room_name" placeholder="Room Name" value="<?=$details['name']?>">
                                     <?php echo form_error('room_name') ?>
                                 </div>
                             </div>
@@ -47,22 +47,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <label for="room_type" class="form-label">Room Type</label>
                                     <select name="room_type" class="form-control" id="room_type">
                                         <option value="0">--Select Room Type--</option>
-                                        <option value="1">Junior</option>
-                                        <option value="2">Standard</option>
-                                        <option value="3">Intermediate</option>
-                                        <option value="4">Twin</option>
-                                        <option value="5">Family</option>
+                                        <option value="1" <?=($details['room_type'] === '1' ? 'selected' : '')?>>Junior</option>
+                                        <option value="2" <?=($details['room_type'] === '2' ? 'selected' : '')?>>Standard</option>
+                                        <option value="3" <?=($details['room_type'] === '3' ? 'selected' : '')?>>Intermediate</option>
+                                        <option value="4" <?=($details['room_type'] === '4' ? 'selected' : '')?>>Twin</option>
+                                        <option value="5" <?=($details['room_type'] === '5' ? 'selected' : '')?>>Family</option>
                                     </select>
                                     <?php echo form_error('room_type') ?>
                                     <?=$this->session->flashdata('room_type');?>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="room_rate" class="form-label">Room Rate <small>(60.00) <i>input with decimal</i></small></label>
-                                    <input type="text" class="form-control" name="room_rate" id="room_rate" placeholder="Room Name">
+                                    <input type="text" class="form-control" name="room_rate" id="room_rate" placeholder="Room Name" value="<?=($details['room_rate'] < '0' ? '-' : number_format($details['room_rate'],2))?>">
                                     <?php echo form_error('room_rate') ?>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary mb-3">Add Room</button>
+                            <div class="row">
+                                <input type="hidden" name="id" value="<?= $details['id']?>">
+                                <div class="col-md-2">
+                                    <a href="/dashboard/rooms" class="btn btn-danger mb-3">Cancel Edit</a>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary mb-3">Update Room</button>
+                                </div>
+                            </div>
                         </form>
                         <div class="row">
                             <div class="col">
@@ -107,7 +115,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         ?>                                        </td>
                                                 <td><?=($data['room_rate'] < '0' ? '-' : number_format($data['room_rate'],2))?></td>
                                                 <td>
-                                                    <!-- <input type="text" value="<?=$data['id']?>"> -->
                                                     <a href="/rooms/edit/<?=$data['id']?>" class="text-xxsm btn btn-primary" tabindex="0" data-toggle="tooltip" data-original-title="Edit" data-placement="left"><i class="fas fa-pen"></i></a>
                                                     <a href="/rooms/delete/<?=$data['id']?>" onclick="return confirm('Are you sure you want to DELETE this?')" class="text-xxsm btn btn-danger" tabindex="0" data-toggle="tooltip" data-original-title="Delete" data-placement="left"><i class="fas fa-trash"></i></a>
                                                 </td>

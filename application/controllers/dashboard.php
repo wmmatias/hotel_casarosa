@@ -17,7 +17,11 @@ class Dashboard extends CI_Controller {
             $total_booked = $this->reservation->get_confirmed_reserved();
             $no_guest = $this->reservation->get_no_guest();
             $no_rooms = $this->reservation->get_number_rooms();
-            $data = array('upcoming'=>$upcoming, 'current'=>$current, 'room'=>$available_room, 'arrived'=>$arrived, 'tbooked'=>$total_booked, 'no_guest'=>$no_guest, 'no_rooms'=>$no_rooms);
+            $total_sales = $this->reservation->get_total_sales();
+            $daily_sales = $this->reservation->get_daily_sales();
+            $total_expense = $this->reservation->get_total_expense();
+            $daily_expense = $this->reservation->get_daily_expense();
+            $data = array('upcoming'=>$upcoming, 'current'=>$current, 'room'=>$available_room, 'arrived'=>$arrived, 'tbooked'=>$total_booked, 'no_guest'=>$no_guest, 'no_rooms'=>$no_rooms, 't_sales'=>$total_sales, 'd_sales'=>$daily_sales, 't_expense'=>$total_expense, 'd_expense'=>$daily_expense);
             $this->session->set_userdata(array('page'=> 'dashboard'));
             $this->load->view('templates/header');
             $this->load->view('admin/dashboard', $data);
@@ -92,6 +96,25 @@ class Dashboard extends CI_Controller {
         }
     }
 
+    
+
+    public function rooms_edit($id) 
+    {   
+        $current_user_id = $this->session->userdata('user_id');
+        if(!$current_user_id) { 
+            redirect("users");
+        } 
+        else {
+            $res = $this->room->get_rooms();
+            $details = $this->room->get_details($id);
+            $data = array('datas'=>$res, 'details'=>$details);
+            $this->session->set_userdata(array('page'=> 'rooms'));
+            $this->load->view('templates/header');
+            $this->load->view('admin/rooms_edit', $data);
+            $this->load->view('templates/footer');
+        }
+    }
+
     public function inventory() 
     {   
         $current_user_id = $this->session->userdata('user_id');
@@ -108,17 +131,4 @@ class Dashboard extends CI_Controller {
         }
     }
 
-    public function kitchen() 
-    {   
-        $current_user_id = $this->session->userdata('user_id');
-        if(!$current_user_id) { 
-            redirect("users");
-        } 
-        else {
-            $this->session->set_userdata(array('page'=> 'kitchen'));
-            $this->load->view('templates/header');
-            $this->load->view('admin/kitchen');
-            $this->load->view('templates/footer');
-        }
-    }
 }

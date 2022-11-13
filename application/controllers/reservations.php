@@ -3,6 +3,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Reservations extends CI_Controller {
 
+    public function index_html(){
+        $this->load->view('partials/room_list');
+    }
+
+    public function admin_get_available_room(){
+        $form_data = $this->input->post();
+        $check = $this->reservation->admin_check_validity();
+        if(empty($form_data['check_in']) || empty($form_data['check_out'])){
+            $this->session->set_flashdata('error', 'Please select date range');
+            $this->load->view("partials/room_list");
+        }
+        else{
+            $in = date('Ymd', strtotime($this->input->post('check_in')));
+            $out = date('Ymd', strtotime($this->input->post('check_out')));
+            if($in > $out){
+                $this->session->set_flashdata('error', 'checkin is advance to check out');
+                $this->load->view("partials/room_list");
+            }
+            else{
+                if($check !== 'success'){
+                    $this->session->set_flashdata('input_errors', $check);
+                    $this->load->view("partials/room_list");
+                }
+                else{
+                    $res = $this->reservation->admin_get_available_room($form_data);
+                    $dates = array(
+                        'check_in'  => $form_data['check_in'],
+                        'check_out'     => $form_data['check_out']
+                    );
+                
+                    $this->session->set_userdata($dates);
+                    $data = array('list'=>$res); 
+                    $this->load->view("partials/room_list", $data);
+                }
+            }
+        }
+    }
+
     public function reserve_proccess() 
     {   
         $number = $this->input->post('room_number');
@@ -94,9 +132,11 @@ class Reservations extends CI_Controller {
     }
 
     public function arrived($id){
+        $form_data = $this->input->post();
         $this->reservation->arrived($id);
         $no_guest = $this->reservation->no_guest_id($id);
         $this->reservation->add_inventory($no_guest);
+        $this->reservation->add_sales($form_data);
         $this->session->set_flashdata('arrived', 'The guest arrived!');
         redirect('dashboard/reservation');
     }
@@ -112,5 +152,44 @@ class Reservations extends CI_Controller {
             $this->load->view('templates/header');
             $this->load->view('admin/reservation_availability');
             $this->load->view('templates/footer');
+    }
+
+    public function arrived_views($id){ 
+        $arrived = $this->reservation->get_arrived_id($id);
+        $data = array('arrived'=>$arrived);
+        $this->session->set_userdata(array('page'=> 'reservation'));
+        $this->load->view('templates/header');
+        $this->load->view('admin/reservation_edit', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function admin_booked($id){
+        $res = $this->reservation->get_room_details_by_id($id);
+        $data = array('details'=>$res);
+        $this->session->set_userdata(array('page'=> 'reservation'));
+        $this->load->view('templates/header');
+        $this->load->view('admin/reservation_admin', $data);
+        $this->load->view('templates/footer');
+    }
+
+
+    public function admin_validate(){
+        $form_data = $this->input->post();
+        $res = $this->reservation->admin_validate();
+        if($res !== 'success'){
+            $this->session->set_flashdata('error', '<strong>Something went wrong!</strong> Please input required data.');
+            $this->session->set_flashdata('input_errors', $res);
+            $res = $this->reservation->get_room_details_by_id($form_data['room_id']);
+            $data = array('details'=>$res);
+            $this->session->set_userdata(array('page'=> 'reservation'));
+            $this->load->view('templates/header');
+            $this->load->view('admin/reservation_admin', $data);
+            $this->load->view('templates/footer');
+        }
+        else{
+            $this->reservation->reservation_admin_create($form_data);
+            $this->session->set_flashdata('arrived', '<strong>Successfully Created!</strong>');
+            redirect("dashboard/reservation");
+        }
     }
 }

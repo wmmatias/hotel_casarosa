@@ -148,7 +148,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </div>
                     <div class="card-body">
                         <div class="row">
-                        <div class="col-sm-3">
+                            <div class="col-sm-3">
                                 <div class="stats card-body text-center">
                                     <i class="fas fa-users"></i>
                                     <h1 class="card-title"><?=$tbooked['total_booked']?></h1>
@@ -165,7 +165,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="col-sm-3">
                                 <div class="stats card-body text-center">
                                     <i class="fas fa-users"></i>
-                                    <h1 class="card-title"><?=$no_guest['total_guest']?></h1>
+                                    <h1 class="card-title"><?=($no_guest['total_guest'] === null ? '0':$no_guest['total_guest'])?></h1>
                                     <p>Guest</p>
                                 </div>
                             </div>
@@ -174,6 +174,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <i class="fas fa-bed"></i>
                                     <h1 class="card-title"><?=$no_rooms['total_room']?></h1>
                                     <p>Rooms</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="stats card-body text-center">
+                                    <i class="fas fa-money-bill"></i>
+                                    <h3 class="card-title"><?= number_format($t_sales['total_sales'])?></h3>
+                                    <p>Total Sales</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="stats card-body text-center">
+                                    <i class="fas fa-money-bill"></i>
+                                    <h3 class="card-title"><?=number_format($d_sales['total_sales'])?></h3>
+                                    <p>Today Sales</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="stats card-body text-center">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <h3 class="card-title"><?= number_format($t_expense['total_expense'])?></h3>
+                                    <p>Total Expenses</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="stats card-body text-center">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <h3 class="card-title"><?= number_format($d_expense['total_expense'])?></h3>
+                                    <p>Today Expenses</p>
                                 </div>
                             </div>
                         </div>

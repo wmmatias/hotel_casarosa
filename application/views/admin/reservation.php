@@ -123,7 +123,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <tbody>
 <?php                                   foreach($verified as $vdata){
 ?>                                        <tr>
-                                            <td><a href="/reservations/arrived/<?=$vdata['id']?>" class="btn btn-success">Arrived</a></td>
+                                            <td>
+                                                <a href="/reservations/edit/<?=$vdata['id']?>" class="btn btn-success">Arrived</a>
+                                            </td>
                                             <td><?=$vdata['first_name'].' '.$vdata['last_name']?></td>
                                             <td><?=$vdata['phone']?></td>
                                             <td><?=$vdata['room_number']?></td>

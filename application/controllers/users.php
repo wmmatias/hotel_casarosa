@@ -123,7 +123,13 @@ class Users extends CI_Controller {
         $form_data = $this->input->post();
         if($this->input->post('userlevel') === '3'){
             $this->session->set_flashdata('userlevel', 'Please select User Level');
-                redirect('/dashboard/employee_edit');
+            $res = $this->user->get_users();
+            $details = $this->user->get_user_details($id);
+            $data = array('datas'=>$res, 'details'=>$details);
+            $this->session->set_userdata(array('page'=> 'employee'));
+            $this->load->view('templates/header');
+            $this->load->view('admin/employee_edit', $data);
+            $this->load->view('templates/footer');
         }
         else{
             $result = $this->user->validate_information();

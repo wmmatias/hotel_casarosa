@@ -21,6 +21,21 @@ $fullname = $this->session->userdata('fullname');
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <script src="/assets/js/App.js"></script>
     <title>Hotel Casarosa</title>
+    <script>
+		function updateNewPrice() {
+            var total = document.getElementById('amount').value;
+			var package = document.getElementById('package').value;
+            document.getElementById('amount').value = package;
+			// var discountPrct = document.getElementById('percent').value;
+			// if (!isNaN(oldPrice) && !isNaN(discountPrct)) {
+			// 	//var discount = (oldPrice / 100) * discountPrct;
+			// 	var count = (discountPrct / 100) * oldPrice;
+			// 	var discount = oldPrice - count;
+			// 	if (discount > 0)
+			// 		document.getElementById('new_price').value = discount;
+			// }
+		}
+	</script>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand">

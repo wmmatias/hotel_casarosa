@@ -58,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <?php echo form_error('userlevel') ?>
                                 <?=$this->session->flashdata('userlevel');?>
                             </div>
-                            <button type="submit" class="btn btn-primary mb-3">Add Room</button>
+                            <button type="submit" class="btn btn-primary mb-3">Add User</button>
                         </form>
                         <div class="row">
                             <div class="col">

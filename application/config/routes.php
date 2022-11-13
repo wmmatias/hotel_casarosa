@@ -66,6 +66,7 @@ $route['dashboard/dashboard'] = 'dashboard';
 
 $route['rooms/validate'] = 'rooms/adding_rooms_proccess';
 $route['rooms/delete/(:any)'] = 'rooms/delete_rooms/$1';
+$route['rooms/edit/(:any)'] = 'dashboard/rooms_edit/$1';
 
 $route['users/validate'] = 'users/adding_user_proccess';
 $route['users/delete/(:any)'] = 'users/delete_users/$1';
@@ -78,3 +79,6 @@ $route['reservations/create'] = 'reservations/create_reservation';
 $route['reservations/arrived/(:any)'] = 'reservations/arrived/$1';
 $route['reservation/check_out/(:any)'] = 'reservations/check_out/$1';
 $route['reservations/check_availability'] = 'reservations/check_availability';
+$route['reservations/edit/(:any)'] = 'reservations/arrived_views/$1';
+$route['reservations/admin_booked/(:any)'] = 'reservations/admin_booked/$1';
+$route['reservations/admin_validate'] = 'reservations/admin_validate';
