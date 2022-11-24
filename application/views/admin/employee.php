@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="card-header">
                         <i class="fas fa-users me-1"></i>
                         Employee
-                        <!-- <a class="float-end" href=""><i class="fas fa-add"></i> Add</a> -->
+                        <a class="float-end btn btn-info" href="/dashboard/logs"><i class="fas fa-file"></i> user logs</a>
                     </div>
                     <div class="card-body">
                         

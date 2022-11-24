@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="card-header">
                         <i class="fas fa-warehouse me-1"></i>
                         Inventory
-                        <!-- <a class="float-end" href=""><i class="fas fa-add"></i> Add</a> -->
+                        <a href="/dashboard/inventory_report" class="float-end btn btn-info"><i class="fas fa-file"></i> Reports</a>
                     </div>
                     <div class="card-body">
                     <div class="table-responsive">

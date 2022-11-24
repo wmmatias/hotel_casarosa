@@ -24,8 +24,7 @@ $error = $this->session->flashdata('error');
             url: url,
             type: "GET",
             success: function(response) {
-                console.log(response);
-                let details = response[0];
+                let details = response;
                 container = document.getElementById('room_details');
                 if(details.room_type === '1'){
                     container.innerHTML+='<div class="form-group"><input type="hidden" name="id" class="form-control" value="'+ details.id +'"><label for="room_number">Room Number:</label><input type="text" name="room_number" class="form-control" value="'+details.room_number+'" readonly></div><div class="form-group"><label for="room_type">Room Type:</label><input type="text" class="form-control" value="Single Room" readonly><input type="hidden" name="room_type" class="form-control" value="'+details.room_type+'"></div>';

@@ -31,6 +31,8 @@ class Users extends CI_Controller {
     public function logoff() 
     {
         $this->session->sess_destroy();
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully logged out');
+        $this->user->log($this->session->userdata('user_id'));
         redirect("/");   
     }
 
@@ -53,10 +55,14 @@ class Users extends CI_Controller {
                 $is_admin = $this->user->validate_is_admin($email);
                 if(!empty($is_admin)){
                     $this->session->set_userdata(array('user_id'=>$user['id'], 'fullname'=>$user['first_name'].' '.$user['last_name'],'auth' => true, 'page'=> 'dashboard'));
+                    $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully logged in');
+                    $this->user->log($this->session->userdata('user_id'));
                     redirect("dashboard");
                 }
                 else{
                     $this->session->set_userdata(array('user_id'=>$user['id']));
+                    $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully logged in');
+                    $this->user->log($this->session->userdata('user_id'));
                     redirect("dashboard");
                 }
             }
@@ -75,6 +81,8 @@ class Users extends CI_Controller {
         $form_data = $this->input->post();
         if($this->input->post('userlevel') === '3'){
             $this->session->set_flashdata('userlevel', 'Please select User Level');
+            $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' failed to add '.$form_data['firstname'].' '.$form_data['lastname'].' to user');
+            $this->user->log($this->session->userdata('user_id'));
                 redirect('/dashboard/employee');
         }
         else{
@@ -82,6 +90,8 @@ class Users extends CI_Controller {
             if($result!= 'success')
             {
                 $this->session->set_flashdata('rooms_error', $result);
+                $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' failed to add '.$form_data['firstname'].' '.$form_data['lastname'].' to user');
+                $this->user->log($this->session->userdata('user_id'));
                 $res = $this->user->get_users();
                 $data = array('datas'=>$res);
                 $this->session->set_userdata(array('page'=> 'employee'));
@@ -95,6 +105,8 @@ class Users extends CI_Controller {
                 if(!$check_email){
                     $this->user->create_user($form_data);
                     $this->session->set_flashdata('success', 'Successfully Created!');
+                    $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully add '.$form_data['firstname'].' '.$form_data['lastname'].' to user');
+                    $this->user->log($this->session->userdata('user_id'));
                     redirect('/dashboard/employee');
                 }
                 else{
@@ -122,6 +134,8 @@ class Users extends CI_Controller {
         $id = $this->input->post('id');
         $form_data = $this->input->post();
         if($this->input->post('userlevel') === '3'){
+            $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' failed to modified the details of '.$form_data['firstname'].' '.$form_data['lastname'].' to user');
+            $this->user->log($this->session->userdata('user_id'));
             $this->session->set_flashdata('userlevel', 'Please select User Level');
             $res = $this->user->get_users();
             $details = $this->user->get_user_details($id);
@@ -134,6 +148,8 @@ class Users extends CI_Controller {
         else{
             $result = $this->user->validate_information();
             if($result != 'success') {
+                $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' failed to modified the details of '.$form_data['firstname'].' '.$form_data['lastname'].' to user');
+                $this->user->log($this->session->userdata('user_id'));
                 $this->session->set_flashdata('input_errors', $result);
                 $res = $this->user->get_users();
                 $details = $this->user->get_user_details($id);
@@ -146,6 +162,8 @@ class Users extends CI_Controller {
             else
             {
                 $this->user->update_userinformation($form_data);
+                $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully modified details of '.$form_data['firstname'].' '.$form_data['lastname'].' to user');
+                $this->user->log($this->session->userdata('user_id'));
                 $this->session->set_flashdata('success','The user information successfully modified');
                 redirect("dashboard/employee");
             }
@@ -172,6 +190,8 @@ class Users extends CI_Controller {
     public function delete_users($id) 
     {
         $this->user->delete_user($id);
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully deleted '.$id.' to user');
+        $this->user->log($this->session->userdata('user_id'));
         $this->session->set_flashdata('success', 'Successfully Deleted!');
         redirect('/dashboard/employee');
     }

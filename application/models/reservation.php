@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+date_default_timezone_set('Asia/Manila');
 class Reservation extends CI_Model {
 
     public function get_reservation(){
@@ -92,7 +92,7 @@ class Reservation extends CI_Model {
         FROM fmitr_casarosa.reservations
         LEFT JOIN fmitr_casarosa.rooms
         ON reservations.room_id = rooms.id
-        WHERE status = ? AND DATE(`check_in`) = DATE(NOW())");
+        WHERE status != ? AND DATE(`check_in`) = DATE(NOW())");
         $values = array(
             $this->security->xss_clean($status)
         );
@@ -167,30 +167,34 @@ class Reservation extends CI_Model {
     }
 
     public function get_availabe($form_data){
+        $status ='3';
         return $this->db->query("SELECT * 
         FROM fmitr_casarosa.rooms 
         WHERE room_type = ? AND id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
-        WHERE  (check_in <= ? AND check_out >= ? AND status != '3')
-		    OR (check_in < ? AND check_out >= ? AND status != '3')
-		    OR (check_in <= ? AND check_out >= ? AND status != '3'))",
+        WHERE  (check_in >= ? AND check_in < ? AND status != ?)
+		    OR (check_out > ? AND check_out < ? AND status != ?)
+		    OR (check_in < ? AND check_out > ? AND status != ?))",
         array(
             $this->security->xss_clean($form_data['type']),
             $this->security->xss_clean($form_data['check_in']),
+            $this->security->xss_clean($form_data['check_out']),
+            $this->security->xss_clean($status),
             $this->security->xss_clean($form_data['check_in']),
             $this->security->xss_clean($form_data['check_out']),
+            $this->security->xss_clean($status),
+            $this->security->xss_clean($form_data['check_in']),
             $this->security->xss_clean($form_data['check_out']),
-            $this->security->xss_clean($form_data['check_in']),
-            $this->security->xss_clean($form_data['check_in']),
+            $this->security->xss_clean($status),
         ))->result_array();
            
     }
 
     public function admin_get_available_room($form_data){
-        date_default_timezone_set('Asia/Manila');
         $checkin = $form_data['check_in'];
         $checkout = $form_data['check_out'];
+        $status = '3';
         $query = ("SELECT * 
         FROM fmitr_casarosa.rooms 
         WHERE id NOT IN 
@@ -295,8 +299,8 @@ class Reservation extends CI_Model {
             $this->security->xss_clean($form_data['check_in']), 
             $this->security->xss_clean($form_data['check_out']), 
             $this->security->xss_clean($vkey), 
-            $this->security->xss_clean(date("Y-m-d, H:i:s")),
-            $this->security->xss_clean(date("Y-m-d, H:i:s"))
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
+            $this->security->xss_clean(date("Y-m-d H:i:s"))
         ); 
         $this->email->reservation_email($form_data, $vkey);
         $array_items = array('checkin', 'checkout', 'adult', 'children','roomtype');
@@ -310,7 +314,7 @@ class Reservation extends CI_Model {
         return $this->db->query("UPDATE reservations SET status = ?, updated_at = ? WHERE vkey = ?", 
         array(
             $this->security->xss_clean($status), 
-            $this->security->xss_clean(date("Y-m-d, H:i:s")),
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
             $this->security->xss_clean($vkey),
             
         ));
@@ -321,7 +325,7 @@ class Reservation extends CI_Model {
         return $this->db->query("UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?", 
         array(
             $this->security->xss_clean($status), 
-            $this->security->xss_clean(date("Y-m-d, H:i:s")),
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
             $this->security->xss_clean($id)));
     }
 
@@ -330,7 +334,7 @@ class Reservation extends CI_Model {
         return $this->db->query("UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?", 
         array(
             $this->security->xss_clean($status), 
-            $this->security->xss_clean(date("Y-m-d, H:i:s")),
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
             $this->security->xss_clean($id)));
     }
 
@@ -339,7 +343,7 @@ class Reservation extends CI_Model {
         return $this->db->query("UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?", 
         array(
             $this->security->xss_clean($status), 
-            $this->security->xss_clean(date("Y-m-d, H:i:s")),
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
             $this->security->xss_clean($id)));
     }
 
@@ -362,8 +366,8 @@ class Reservation extends CI_Model {
             $this->security->xss_clean($name), 
             $this->security->xss_clean($no_guest['total_guest']), 
             $this->security->xss_clean($expense), 
-            $this->security->xss_clean(date("Y-m-d, H:i:s")),
-            $this->security->xss_clean(date("Y-m-d, H:i:s"))
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
+            $this->security->xss_clean(date("Y-m-d H:i:s"))
         ); 
         return $this->db->query($query, $values);
     }
@@ -379,10 +383,33 @@ class Reservation extends CI_Model {
             $this->security->xss_clean(str_replace(',', '', $form_data['extras'])), 
             $this->security->xss_clean(str_replace(',', '', $form_data['discount'])), 
             $this->security->xss_clean(str_replace(',', '', $form_data['amount'])), 
-            $this->security->xss_clean(date("Y-m-d, H:i:s")),
-            $this->security->xss_clean(date("Y-m-d, H:i:s"))
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
+            $this->security->xss_clean(date("Y-m-d H:i:s"))
         ); 
         return $this->db->query($query, $values);
+    }
+
+    public function update_details($form_data){
+        $this->db->query("UPDATE reservations SET x_bed=?, x_person=?, x_bfast=?, x_hour=?, updated_at=? WHERE id=?",
+        array(
+            $this->security->xss_clean($form_data['bed']), 
+            $this->security->xss_clean($form_data['person']),
+            $this->security->xss_clean($form_data['bfast']), 
+            $this->security->xss_clean($form_data['hour']),
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
+            $this->security->xss_clean($form_data['edit_checkin'])
+        ));
+        $this->db->query("UPDATE sales SET pwd=?, senior=?, total_extras=?, total_discount=?, total_amount=?, updated_at=? WHERE reservation_id=?",
+        array(
+            $this->security->xss_clean($form_data['pwd']), 
+            $this->security->xss_clean($form_data['senior']),
+            $this->security->xss_clean($form_data['extras']), 
+            $this->security->xss_clean($form_data['discount']),
+            $this->security->xss_clean($form_data['amount']),
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
+            $this->security->xss_clean($form_data['edit_checkin'])
+        ));
+       
     }
 
     public function get_inventory(){
@@ -400,6 +427,20 @@ class Reservation extends CI_Model {
         LEFT JOIN fmitr_casarosa.rooms
         ON reservations.room_id = rooms.id
         WHERE reservations.id=?");
+        $values = array(
+            $this->security->xss_clean($id)
+        );
+        return $this->db->query($query, $values)->result_array()[0];
+    }
+
+    public function edit_checkin($id){
+        $query = ("SELECT reservations.id, reservations.first_name, reservations.last_name, reservations.phone, reservations.email, rooms.id as room_id, rooms.room_number, rooms.room_type, rooms.room_rate, reservations.adult, reservations.children, reservations.x_bed, reservations.x_person, reservations.x_bfast, reservations.x_hour, sales.pwd, sales.senior, reservations.check_in, reservations.check_out, reservations.status
+        FROM fmitr_casarosa.reservations
+        LEFT JOIN fmitr_casarosa.rooms
+        ON reservations.room_id = rooms.id
+        LEFT JOIN fmitr_casarosa.sales
+        ON reservations.id = sales.reservation_id
+        WHERE reservations.id= ?");
         $values = array(
             $this->security->xss_clean($id)
         );

@@ -12,7 +12,7 @@ $(document).ready(function() {
     });
 
     $('#book_details').submit(function() {
-        $('#spin').show();
+        $('#spin').show().delay(5000).fadeOut();
         $('#spin').css('visibility', 'visible');
     });
 
@@ -21,6 +21,7 @@ $(document).ready(function() {
             $('#reservebtn').removeAttr('disabled');
         } else {
             $('#reservebtn').attr('disabled', 'disabled');
+            $('#reservebtn').addClass('bg-secondary');
         }
     });
 

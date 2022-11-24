@@ -46,30 +46,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         Guest Today
                     </div>
                     <div class="card-body">
-                        <table id="current" class="table table-striped table-bordered table-hover text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Room #</th>
-                                    <th>Number of guest</th>
-                                    <th>Check In</th>
-                                    <th>Check Out</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-<?php                           foreach($current as $data){
-                                $check_in = date('m-d-Y', strtotime($data['check_in']));
-                                $check_out = date('m-d-Y', strtotime($data['check_out']));
-?>                                <tr>
-                                    <td><?=$data['first_name'].' '.$data['last_name']?></td>
-                                    <td><?=$data['room_number']?></td>
-                                    <td><?=$data['no_guest']?></td>
-                                    <td><?=$check_in?></td>
-                                    <td><?=$check_out?></td>
-                                </tr>
-<?php                           }
-?>                            </tbody>
-                        </table>
+                       
+                    <table id="current" class="table table-striped table-bordered table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Room</th>
+                                        <th>Check In</th>
+                                        <th>Check Out</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+<?php                               foreach($current as $data){
+                                    $check_in = date('m-d-Y', strtotime($data['check_in']));
+                                    $check_out = date('m-d-Y', strtotime($data['check_out']));
+?>                                    <tr>
+                                        <td><?= $data['first_name'].' '.$data['last_name']?></td>
+                                        <td><?= $data['phone']?></td>
+                                        <td><?= $data['room_number']?></td>
+                                        <td><?= $check_in?></td>
+                                        <td><?= $check_out?></td>
+                                    </tr>
+<?php                               }
+?>                                </tbody>
+                            </table>
                     </div>
                 </div>
             </div>

@@ -47,9 +47,17 @@ class Reservations extends CI_Controller {
         $form_data = $this->input->post();
         $in = date('Ymd', strtotime($this->input->post('check_in')));
         $out = date('Ymd', strtotime($this->input->post('check_out')));
+        $today = date('Ymd');
         if($in > $out){
             $this->session->set_flashdata('error', '<strong>Checking availability failed!</strong> You should check in on some of those fields below.');
             $this->session->set_flashdata('check_in', 'Check In date is advance in check out');
+            $this->load->view('client/templates/header');
+            $this->load->view('client/index');
+            $this->load->view('client/templates/footer');
+        }
+        else if($in < $today){
+            $this->session->set_flashdata('error', '<strong>Checking availability failed!</strong> You should check in on some of those fields below.');
+            $this->session->set_flashdata('check_in', 'Past date booking is no allowed');
             $this->load->view('client/templates/header');
             $this->load->view('client/index');
             $this->load->view('client/templates/footer');
@@ -137,14 +145,47 @@ class Reservations extends CI_Controller {
         $no_guest = $this->reservation->no_guest_id($id);
         $this->reservation->add_inventory($no_guest);
         $this->reservation->add_sales($form_data);
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' check in the guest '.$id.'');
+        $this->user->log($this->session->userdata('user_id'));
         $this->session->set_flashdata('arrived', 'The guest arrived!');
         redirect('dashboard/reservation');
     }
 
+    public function update_checkin(){
+        $form_data = $this->input->post();
+        $id = $form_data['edit_checkin'];
+        if($form_data['pwd'] < $form_data['pwd1'] || $form_data['senior'] <  $form_data['senior1'] || $form_data['adult'] < $form_data['adult1'] || $form_data['children'] <  $form_data['children1'] || $form_data['bed'] < $form_data['bed1'] || $form_data['person'] <  $form_data['person1'] || $form_data['bfast'] < $form_data['bfast1'] || $form_data['hour'] <  $form_data['hour1']){
+            $this->session->set_flashdata('error', '<p class="text-danger">Please input value not lower than original data</p>');
+            $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' failed to modified check In details due to lower value than the original data '.$id.'');
+            $this->user->log($this->session->userdata('user_id'));
+            $this->edit_in($id);
+        }
+        else{
+            $this->reservation->update_details($form_data);
+            $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' checkin details success '.$id.'');
+            $this->user->log($this->session->userdata('user_id'));
+            $this->session->set_flashdata('arrived', 'Check In details successfully update');
+            redirect('dashboard/reservation');
+        }
+    }
+
     public function check_out($id){
         $this->reservation->check_out($id);
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' check out the guest '.$id.'');
+        $this->user->log($this->session->userdata('user_id'));
         $this->session->set_flashdata('check_out', 'The guest check out!');
         redirect('dashboard/reservation');
+    }
+
+    public function edit_in($id){
+        $arrived = $this->reservation->edit_checkin($id);
+        $data = array('arrived'=>$arrived);
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' check out the guest '.$id.'');
+        $this->user->log($this->session->userdata('user_id'));
+        $this->session->set_userdata(array('page'=> 'reservation'));
+        $this->load->view('templates/header');
+        $this->load->view('admin/reservation_update', $data);
+        $this->load->view('templates/footer');
     }
     
     public function check_availability(){
@@ -157,6 +198,8 @@ class Reservations extends CI_Controller {
     public function arrived_views($id){ 
         $arrived = $this->reservation->get_arrived_id($id);
         $data = array('arrived'=>$arrived);
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' attempt to check in the guest '.$id.'');
+        $this->user->log($this->session->userdata('user_id'));
         $this->session->set_userdata(array('page'=> 'reservation'));
         $this->load->view('templates/header');
         $this->load->view('admin/reservation_edit', $data);

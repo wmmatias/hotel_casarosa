@@ -1,15 +1,4 @@
 $(document).ready(function() {
-    $.get('/reservations/index_html', function(res) {
-        $('#room_display').html(res);
-    });
-
-    $(document).on('submit', '#admin_check', function(){
-        var form = $(this);
-        $.post(form.attr('action'), form.serialize(), function(res){
-            $('#room_display').html(res);
-        });
-        return false;
-    });
 
     // $('#upcoming').DataTable();
     $('#upcoming').DataTable({
@@ -31,6 +20,7 @@ $(document).ready(function() {
     $('#datatable').DataTable();
     $('#verified').DataTable();
     $('#arrived').DataTable();
+    $('#yesterday').DataTable();
 
     var bed = document.getElementById('bed').value;
     var person = document.getElementById('person').value;
@@ -51,7 +41,7 @@ $(document).ready(function() {
     var bfast_price = 170;
     var hour_price = 200;
 
-    var discount_amount = (0.5 / 100) * package;
+    var discount_amount = (5 / 100) * package;
     var pwd_amount = pwd_qty * discount_amount;
     var senior_amount = senior_qty * discount_amount;
     total_discount = pwd_amount + senior_amount;

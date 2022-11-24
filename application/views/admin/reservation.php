@@ -7,8 +7,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-list-alt me-1"></i>
-                        Reservation
-                        <a class="float-end" href="/reservations/check_availability"><i class="fas fa-add"></i> Check Availability</a>
+                        Reservation 
+                        <a class="float-end btn btn-success ms-3" href="/reservations/check_availability"><i class="fas fa-add"></i> Check Availability</a>
+                        <a href="/dashboard/reservation_report" class="float-end btn btn-info"><i class="fas fa-file"></i> Reports</a>
                     </div>
                     <div class="card-body">
 <?php	                if(!$this->session->flashdata('arrived')){
@@ -124,7 +125,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php                                   foreach($verified as $vdata){
 ?>                                        <tr>
                                             <td>
-                                                <a href="/reservations/edit/<?=$vdata['id']?>" class="btn btn-success">Arrived</a>
+                                                <a href="/reservations/edit/<?=$vdata['id']?>" class="btn btn-success">Check In</a>
                                             </td>
                                             <td><?=$vdata['first_name'].' '.$vdata['last_name']?></td>
                                             <td><?=$vdata['phone']?></td>
@@ -182,7 +183,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <tbody>
 <?php                                   foreach($arrived as $adata){
 ?>                                        <tr>
-                                            <td><a href="/reservation/check_out/<?=$adata['id']?>" class="btn btn-success">Check Out</a></td>
+                                            <td>
+                                                <a href="/reservation/edit_in/<?=$adata['id']?>" class="btn btn-info">Edit</a>
+                                                <a href="/reservation/check_out/<?=$adata['id']?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to Check Out this guest?')">Check Out</a>
+                                            </td>
                                             <td><?=$adata['first_name'].' '.$adata['last_name']?></td>
                                             <td><?=$adata['phone']?></td>
                                             <td><?=$adata['room_number']?></td>

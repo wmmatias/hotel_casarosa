@@ -45,6 +45,22 @@ class Dashboard extends CI_Controller {
         }
     }
 
+    public function logs() 
+    {   
+        $current_user_id = $this->session->userdata('user_id');
+        if(!$current_user_id) { 
+            redirect("users");
+        } 
+        else {
+            $res = $this->user->fetch_all_logs();
+            $data = array('datas'=>$res);
+            $this->session->set_userdata(array('page'=> 'employee'));
+            $this->load->view('templates/header');
+            $this->load->view('admin/logs', $data);
+            $this->load->view('templates/footer');
+        }
+    }
+
     public function employee_edit($id) 
     {   
         $current_user_id = $this->session->userdata('user_id');
@@ -79,6 +95,53 @@ class Dashboard extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
+    
+    public function reservation_report() 
+    {   
+        $current_user_id = $this->session->userdata('user_id');
+        if(!$current_user_id) { 
+            redirect("users");
+        } 
+        else {
+            $daily = $this->report->daily_table();
+            $yesterday = $this->report->yesterday_table();
+            $weekly = $this->report->weekly_table();
+            $monthly = $this->report->monthly_table();
+            // $pdaily = $this->report->pdaily();
+            // $pyesterday = $this->report->pyesterday();
+            // $pweekly = $this->report->pweekly();
+            // $pmonthly = $this->report->pmonthly();
+            $data = array('daily'=>$daily, 'yesterday'=>$yesterday, 'weekly'=>$weekly, 'monthly'=>$monthly);
+            $this->session->set_userdata(array('page'=> 'reservation'));
+            $this->load->view('templates/header');
+            $this->load->view('admin/report_reservation',$data);
+            $this->load->view('templates/footer');
+        }
+    }
+
+    public function inventory_report() 
+    {   
+        $current_user_id = $this->session->userdata('user_id');
+        if(!$current_user_id) { 
+            redirect("users");
+        } 
+        else {
+            $daily = $this->report->idaily_table();
+            $yesterday = $this->report->iyesterday_table();
+            $weekly = $this->report->iweekly_table();
+            $monthly = $this->report->imonthly_table();
+            // $pdaily = $this->report->pidaily();
+            // $pyesterday = $this->report->piyesterday();
+            // $pweekly = $this->report->piweekly();
+            // $pmonthly = $this->report->pimonthly();
+            $data = array('daily'=>$daily, 'yesterday'=>$yesterday, 'weekly'=>$weekly, 'monthly'=>$monthly);
+            $this->session->set_userdata(array('page'=> 'inventory'));
+            $this->load->view('templates/header');
+            $this->load->view('admin/report_inventory',$data);
+            $this->load->view('templates/footer');
+        }
+    }
+
 
     public function rooms() 
     {   
