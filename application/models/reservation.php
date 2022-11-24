@@ -107,10 +107,9 @@ class Reservation extends CI_Model {
         WHERE id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
-        WHERE (check_in <= ? AND check_out >= ? AND status != '3')
-		OR (check_in < ? AND check_out >= ? AND status != '3')
-		OR (check_in <= ? AND check_out >= ? AND status != '3'))
-        ORDER BY room_number ASC");
+        WHERE  (check_in >= ? AND check_in < ? AND status != ?)
+		    OR (check_out > ? AND check_out < ? AND status != ?)
+		    OR (check_in < ? AND check_out > ? AND status != ?))");
         $values = array(
             $this->security->xss_clean($date),
             $this->security->xss_clean($date),
@@ -197,20 +196,22 @@ class Reservation extends CI_Model {
         $status = '3';
         $query = ("SELECT * 
         FROM fmitr_casarosa.rooms 
-        WHERE id NOT IN 
+        WHERE room_type = ? AND id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
-        WHERE (check_in <= ? AND check_out >= ? AND status != '3')
-		OR (check_in < ? AND check_out >= ? AND status != '3')
-		OR (check_in <= ? AND check_out >= ? AND status != '3'))
-        ORDER BY room_number ASC");
+        WHERE  (check_in >= ? AND check_in < ? AND status != ?)
+		    OR (check_out > ? AND check_out < ? AND status != ?)
+		    OR (check_in < ? AND check_out > ? AND status != ?))");
         $values = array(
             $this->security->xss_clean($checkin),
+            $this->security->xss_clean($checkout),
+            $this->security->xss_clean($status),
             $this->security->xss_clean($checkin),
             $this->security->xss_clean($checkout),
-            $this->security->xss_clean($checkout),
+            $this->security->xss_clean($status),
             $this->security->xss_clean($checkin),
-            $this->security->xss_clean($checkin)
+            $this->security->xss_clean($checkout),
+            $this->security->xss_clean($status)
         );
         return $this->db->query($query, $values)->result_array();
     }
