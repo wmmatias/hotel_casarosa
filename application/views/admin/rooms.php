@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$user = $this->session->userdata('auth') === true;
 ?>    <div class="container-fluid px-4">
         
         <div class="row mt-4">
@@ -28,6 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
 <?php	                }
+                        if($user){                       
 ?>                        <form action="/rooms/validate" method="post">
                             <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>" />
                             <div class="row">
@@ -64,7 +66,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                             <button type="submit" class="btn btn-primary mb-3">Add Room</button>
                         </form>
-                        <div class="row">
+<?php                   }
+?>                        <div class="row">
                             <div class="col">
                                 <div class="card mb-4">
                                     <div class="card-header">
@@ -106,12 +109,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php                                       }                                            
         ?>                                        </td>
                                                 <td><?=($data['room_rate'] < '0' ? '-' : number_format($data['room_rate'],2))?></td>
+<?php                                           if($user){
+?>                        
                                                 <td>
                                                     <!-- <input type="text" value="<?=$data['id']?>"> -->
                                                     <a href="/rooms/edit/<?=$data['id']?>" class="text-xxsm btn btn-primary" tabindex="0" data-toggle="tooltip" data-original-title="Edit" data-placement="left"><i class="fas fa-pen"></i></a>
                                                     <a href="/rooms/delete/<?=$data['id']?>" onclick="return confirm('Are you sure you want to DELETE this?')" class="text-xxsm btn btn-danger" tabindex="0" data-toggle="tooltip" data-original-title="Delete" data-placement="left"><i class="fas fa-trash"></i></a>
                                                 </td>
-        <?php                           }
+        <?php                                       }
+                                                }
         ?>                                    </tr>
                                         </tbody>
                                     </table>

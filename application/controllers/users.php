@@ -60,7 +60,7 @@ class Users extends CI_Controller {
                     redirect("dashboard");
                 }
                 else{
-                    $this->session->set_userdata(array('user_id'=>$user['id']));
+                    $this->session->set_userdata(array('user_id'=>$user['id'], 'fullname'=>$user['first_name'].' '.$user['last_name'], 'auth' => 'user', 'page'=> 'dashboard'));
                     $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully logged in');
                     $this->user->log($this->session->userdata('user_id'));
                     redirect("dashboard");

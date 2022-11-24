@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$user = $this->session->userdata('auth') === true;
 ?>    <div class="container-fluid px-4">
         
         <div class="row">
@@ -9,8 +10,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <i class="fas fa-list-alt me-1"></i>
                         Reservation 
                         <a class="float-end btn btn-success ms-3" href="/reservations/check_availability"><i class="fas fa-add"></i> Check Availability</a>
-                        <a href="/dashboard/reservation_report" class="float-end btn btn-info"><i class="fas fa-file"></i> Reports</a>
-                    </div>
+<?php                   if($user){
+?>                        <a href="/dashboard/reservation_report" class="float-end btn btn-info"><i class="fas fa-file"></i> Reports</a>
+<?php                   }
+?>                    </div>
                     <div class="card-body">
 <?php	                if(!$this->session->flashdata('arrived')){
 		                }

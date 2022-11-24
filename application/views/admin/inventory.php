@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$user = $this->session->userdata('auth') === true;
 ?>    <div class="container-fluid px-4">
         
         <div class="row">
@@ -8,8 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="card-header">
                         <i class="fas fa-warehouse me-1"></i>
                         Inventory
-                        <a href="/dashboard/inventory_report" class="float-end btn btn-info"><i class="fas fa-file"></i> Reports</a>
-                    </div>
+<?php                   if($user){
+?>                        <a href="/dashboard/inventory_report" class="float-end btn btn-info"><i class="fas fa-file"></i> Reports</a>
+<?php                   }
+?>                    </div>
                     <div class="card-body">
                     <div class="table-responsive">
                                     <table id="verified" class="table table-striped table-bordered table-hover text-nowrap">
