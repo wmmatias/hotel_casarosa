@@ -1,6 +1,17 @@
 $(document).ready(function() {
 
-    // $('#upcoming').DataTable();
+    $.get('/reservations/index_html', function(res) {
+        $('#room_display').html(res);
+    });
+
+    $(document).on('submit', '#admin_check', function(){
+        var form = $(this);
+        $.post(form.attr('action'), form.serialize(), function(res){
+            $('#room_display').html(res);
+        });
+        return false;
+    });
+    
     $('#upcoming').DataTable({
         "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
         "pageLength": 3,
@@ -179,6 +190,6 @@ $(document).ready(function() {
         document.getElementById('amount').value = Number(total_amount).toLocaleString('en', 2);
     });
 
-
+   
 });
   

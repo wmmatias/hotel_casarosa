@@ -102,14 +102,14 @@ class Reservations extends CI_Controller {
         $form_data = $this->input->post();
         $res = $this->reservation->validate();
         if($res !== 'success'){
-            $this->session->set_flashdata('error', '<strong>Successfully Reserve!</strong> Please verify your email.');
+            $this->session->set_flashdata('error', '<strong>Failed Reserve!</strong> Some fields required.');
             $this->session->set_flashdata('input_errors', $res);
             $this->load->view("partials/personal");
         }
         else{
             $check = $this->reservation->check_double_reservation($form_data);
             if(empty($check)){
-                $this->session->set_flashdata('success', '<strong>Successfully Reserve!</strong> Please verify your email.');
+                $this->session->set_flashdata('success', '<strong>Failed Reserve!</strong> Multiple Booking is not allowed.');
                 $this->reservation->create_reservation($form_data);
                 $this->load->view("partials/personal");
             }

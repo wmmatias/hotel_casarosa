@@ -36,24 +36,27 @@ class Reservation extends CI_Model {
     }
 
     public function get_number_rooms(){
-        date_default_timezone_set('Asia/Manila');
+        $status = '3';
         $date = date('Y-m-d');
         $query = ("SELECT count(*) as total_room
         FROM fmitr_casarosa.rooms 
         WHERE id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
-        WHERE (check_in <= ? AND check_out >= ? AND status != '3')
-		OR (check_in < ? AND check_out >= ? AND status != '3')
-		OR (check_in <= ? AND check_out >= ? AND status != '3'))
+        WHERE  (check_in >= ? AND check_in < ? AND status != ?)
+		    OR (check_out > ? AND check_out < ? AND status != ?)
+		    OR (check_in < ? AND check_out > ? AND status != ?))
         ORDER BY room_number ASC");
         $values = array(
             $this->security->xss_clean($date),
             $this->security->xss_clean($date),
+            $this->security->xss_clean($status),
             $this->security->xss_clean($date),
             $this->security->xss_clean($date),
+            $this->security->xss_clean($status),
             $this->security->xss_clean($date),
-            $this->security->xss_clean($date)
+            $this->security->xss_clean($date),
+            $this->security->xss_clean($status)
         );
         return $this->db->query($query, $values)->result_array()[0];
     }
@@ -100,7 +103,7 @@ class Reservation extends CI_Model {
     }
 
     public function get_available_room(){
-        date_default_timezone_set('Asia/Manila');
+        $status = '3';
         $date = date('Y-m-d');
         $query = ("SELECT * 
         FROM fmitr_casarosa.rooms 
@@ -109,14 +112,18 @@ class Reservation extends CI_Model {
         FROM fmitr_casarosa.reservations
         WHERE  (check_in >= ? AND check_in < ? AND status != ?)
 		    OR (check_out > ? AND check_out < ? AND status != ?)
-		    OR (check_in < ? AND check_out > ? AND status != ?))");
+		    OR (check_in < ? AND check_out > ? AND status != ?))
+        ORDER BY room_number ASC");
         $values = array(
             $this->security->xss_clean($date),
             $this->security->xss_clean($date),
+            $this->security->xss_clean($status),
             $this->security->xss_clean($date),
             $this->security->xss_clean($date),
+            $this->security->xss_clean($status),
             $this->security->xss_clean($date),
-            $this->security->xss_clean($date)
+            $this->security->xss_clean($date),
+            $this->security->xss_clean($status)
         );
         return $this->db->query($query, $values)->result_array();
     }
@@ -191,29 +198,26 @@ class Reservation extends CI_Model {
     }
 
     public function admin_get_available_room($form_data){
-        $checkin = $form_data['check_in'];
-        $checkout = $form_data['check_out'];
-        $status = '3';
-        $query = ("SELECT * 
+        $status ='3';
+        return $this->db->query("SELECT * 
         FROM fmitr_casarosa.rooms 
-        WHERE room_type = ? AND id NOT IN 
+        WHERE id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
         WHERE  (check_in >= ? AND check_in < ? AND status != ?)
 		    OR (check_out > ? AND check_out < ? AND status != ?)
-		    OR (check_in < ? AND check_out > ? AND status != ?))");
-        $values = array(
-            $this->security->xss_clean($checkin),
-            $this->security->xss_clean($checkout),
+		    OR (check_in < ? AND check_out > ? AND status != ?))",
+        array(
+            $this->security->xss_clean($form_data['check_in']),
+            $this->security->xss_clean($form_data['check_out']),
             $this->security->xss_clean($status),
-            $this->security->xss_clean($checkin),
-            $this->security->xss_clean($checkout),
+            $this->security->xss_clean($form_data['check_in']),
+            $this->security->xss_clean($form_data['check_out']),
             $this->security->xss_clean($status),
-            $this->security->xss_clean($checkin),
-            $this->security->xss_clean($checkout),
-            $this->security->xss_clean($status)
-        );
-        return $this->db->query($query, $values)->result_array();
+            $this->security->xss_clean($form_data['check_in']),
+            $this->security->xss_clean($form_data['check_out']),
+            $this->security->xss_clean($status),
+        ))->result_array();
     }
 
     public function admin_check_validity(){
@@ -271,12 +275,14 @@ class Reservation extends CI_Model {
     }
 
     public function check_double_reservation($form_data){
-        $query = "SELECT * FROM reservations WHERE room_id = ? AND first_name = ? AND check_in =? AND check_out = ?";
+        $status = '3';
+        $query = "SELECT * FROM reservations WHERE room_id = ? AND first_name = ? AND check_in =? AND check_out = ? AND status !=?";
         $values = array(
             $this->security->xss_clean($form_data['id']), 
             $this->security->xss_clean($form_data['firstname']), 
             $this->security->xss_clean($form_data['check_in']), 
-            $this->security->xss_clean($form_data['check_out']), 
+            $this->security->xss_clean($form_data['check_out']),
+            $this->security->xss_clean($status) 
         );
         return $this->db->query($query, $values)->result_array();
     }
@@ -503,8 +509,8 @@ class Reservation extends CI_Model {
             $this->security->xss_clean($form_data['checkin']), 
             $this->security->xss_clean($form_data['checkout']), 
             $this->security->xss_clean($vkey), 
-            $this->security->xss_clean(date("Y-m-d, H:i:s")),
-            $this->security->xss_clean(date("Y-m-d, H:i:s"))
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
+            $this->security->xss_clean(date("Y-m-d H:i:s"))
         ); 
         $this->email->reservation_email($form_data, $vkey);
         $array_items = array('checkin', 'checkout', 'adult', 'children','roomtype');
