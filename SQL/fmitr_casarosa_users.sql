@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `fmitr_casarosa` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `fmitr_casarosa`;
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: fmitr_casarosa
@@ -34,8 +32,18 @@ CREATE TABLE `users` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','admin','admin@gmail.com','ca87f2beaffea8856dffacdbfb91da2e',0,'2022-11-09 03:45:18','2022-11-09 04:26:58'),(4,'WILARD','MATIAS','lard0595@gmail.com','ca87f2beaffea8856dffacdbfb91da2e',1,'2022-11-24 14:27:14','2022-11-25 00:02:52');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -46,4 +54,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-12  2:24:29
+-- Dump completed on 2022-11-25  8:17:13
