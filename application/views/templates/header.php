@@ -46,7 +46,7 @@ $fullname = $this->session->userdata('fullname');
         if(!$current_user_id) { 
         }
         else{
-?>        <a class="nav-link position-absolute end-0 me-3" href="/dashboard/signoff"><?=$fullname?> <i class="fas fa-power-off"></i></a>
+?>        <a id="log_off" class="nav-link position-absolute end-0 me-3" href="/dashboard/signoff"><?=$fullname?> <i class="fas fa-power-off"></i></a>
 <?php
         }
 ?>    </nav>

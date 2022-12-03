@@ -8,7 +8,6 @@ class Reservation extends CI_Model {
     }
 
     public function get_arrived(){
-        date_default_timezone_set('Asia/Manila');
         $date = $date = date('Y-m-d');
         $status = '2';
         $query = ("SELECT count(*) as total_arrived
@@ -95,7 +94,7 @@ class Reservation extends CI_Model {
         FROM fmitr_casarosa.reservations
         LEFT JOIN fmitr_casarosa.rooms
         ON reservations.room_id = rooms.id
-        WHERE status != ? AND DATE(`check_in`) = DATE(NOW())");
+        WHERE status = ? AND DATE(`check_in`) = DATE(NOW())");
         $values = array(
             $this->security->xss_clean($status)
         );
@@ -327,10 +326,16 @@ class Reservation extends CI_Model {
         ));
     }
 
-    public function arrived($id){
+    public function arrived($id, $form_data){
         $status = '2';
-        return $this->db->query("UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?", 
+        return $this->db->query("UPDATE reservations SET adult=?, children=?, x_bed=?, x_person=?, x_bfast=?, x_hour=?, status = ?, updated_at = ? WHERE id = ?", 
         array(
+            $this->security->xss_clean($form_data['adult']),
+            $this->security->xss_clean($form_data['children']),
+            $this->security->xss_clean($form_data['bed']),
+            $this->security->xss_clean($form_data['person']),
+            $this->security->xss_clean($form_data['bfast']),
+            $this->security->xss_clean($form_data['hour']),
             $this->security->xss_clean($status), 
             $this->security->xss_clean(date("Y-m-d H:i:s")),
             $this->security->xss_clean($id)));
@@ -410,9 +415,9 @@ class Reservation extends CI_Model {
         array(
             $this->security->xss_clean($form_data['pwd']), 
             $this->security->xss_clean($form_data['senior']),
-            $this->security->xss_clean($form_data['extras']), 
-            $this->security->xss_clean($form_data['discount']),
-            $this->security->xss_clean($form_data['amount']),
+            $this->security->xss_clean(str_replace(',', '', $form_data['extras'])), 
+            $this->security->xss_clean(str_replace(',', '', $form_data['discount'])),
+            $this->security->xss_clean(str_replace(',', '', $form_data['amount'])),
             $this->security->xss_clean(date("Y-m-d H:i:s")),
             $this->security->xss_clean($form_data['edit_checkin'])
         ));
@@ -459,7 +464,11 @@ class Reservation extends CI_Model {
     }
 
     public function get_daily_sales(){
-        return $this->db->query("SELECT sum(total_amount) as total_sales FROM fmitr_casarosa.sales WHERE DATE(created_at) = CURDATE();")->result_array()[0];
+        return $this->db->query("SELECT sum(sales.total_amount) as total_sales
+        FROM fmitr_casarosa.reservations
+        LEFT JOIN fmitr_casarosa.sales
+        ON reservations.id = sales.reservation_id
+        WHERE DATE(reservations.check_in) = CURDATE()")->result_array()[0];
     }
 
     public function get_total_expense(){

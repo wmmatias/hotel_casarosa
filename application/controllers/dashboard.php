@@ -107,14 +107,74 @@ class Dashboard extends CI_Controller {
             $yesterday = $this->report->yesterday_table();
             $weekly = $this->report->weekly_table();
             $monthly = $this->report->monthly_table();
-            // $pdaily = $this->report->pdaily();
-            // $pyesterday = $this->report->pyesterday();
-            // $pweekly = $this->report->pweekly();
-            // $pmonthly = $this->report->pmonthly();
             $data = array('daily'=>$daily, 'yesterday'=>$yesterday, 'weekly'=>$weekly, 'monthly'=>$monthly);
             $this->session->set_userdata(array('page'=> 'reservation'));
             $this->load->view('templates/header');
             $this->load->view('admin/report_reservation',$data);
+            $this->load->view('templates/footer');
+        }
+    }
+
+    public function dprint() 
+    {   
+        $isadmin = $this->session->userdata('auth');
+        if(!$isadmin){
+            redirect('/');
+        }
+        else{
+            $res = $this->report->daily_print();
+            $total = $this->report->daily_total();
+            $data = array('daily' => $res, 'total'=>$total);
+            $this->load->view('templates/header');
+            $this->load->view('admin/preview_ddata', $data);
+            $this->load->view('templates/footer');
+        }
+    }
+
+    public function yprint() 
+    {   
+        $isadmin = $this->session->userdata('auth');
+        if(!$isadmin){
+            redirect('/');
+        }
+        else{
+            $res = $this->report->yesterday_print();
+            $total = $this->report->yesterday_total();
+            $data = array('yesterday' => $res, 'total'=>$total);
+            $this->load->view('templates/header');
+            $this->load->view('admin/preview_ydata', $data);
+            $this->load->view('templates/footer');
+        }
+    }
+    
+    public function wprint() 
+    {   
+        $isadmin = $this->session->userdata('auth');
+        if(!$isadmin){
+            redirect('/');
+        }
+        else{
+            $res = $this->report->weekly_print();
+            $total = $this->report->weekly_total();
+            $data = array('weekly' => $res, 'total'=>$total);
+            $this->load->view('templates/header');
+            $this->load->view('admin/preview_wdata', $data);
+            $this->load->view('templates/footer');
+        }
+    }
+    
+    public function mprint() 
+    {   
+        $isadmin = $this->session->userdata('auth');
+        if(!$isadmin){
+            redirect('/');
+        }
+        else{
+            $res = $this->report->monthly_print();
+            $total = $this->report->monthly_total();
+            $data = array('monthly' => $res, 'total'=>$total);
+            $this->load->view('templates/header');
+            $this->load->view('admin/preview_mdata', $data);
             $this->load->view('templates/footer');
         }
     }

@@ -48,6 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <a href="/dashboard/dprint"><i class="fas fa-print m-3"></i>Print</a>
                                 <div class="table-responsive">
                                     <table id="datatable" class="table table-striped table-bordered table-hover text-nowrap">
                                         <thead>
@@ -67,8 +68,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td><?=$notdata['first_name'].' '.$notdata['last_name']?></td>
                                             <td><?=$notdata['phone']?></td>
                                             <td><?=$notdata['room_number']?></td>
-                                            <td><?=$notdata['check_in']?></td>
-                                            <td><?=$notdata['check_out']?></td>
+                                            <td><?=date('M-d-Y',strtotime($notdata['check_in']))?></td>
+                                            <td><?=date('M-d-Y',strtotime($notdata['check_out']))?></td>
                                             <td><?=$notdata['total_discount']?></td>
                                             <td><?=$notdata['total_amount']?></td>
                                         </tr>
@@ -81,6 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane" id="y" role="tabpanel" aria-labelledby="y-tab">
+                                <a href="/dashboard/yprint"><i class="fas fa-print m-3"></i>Print</a>
                                 <div class="table-responsive">
                                     <table id="yesterday" class="table table-striped table-bordered table-hover text-nowrap">
                                         <thead>
@@ -100,8 +102,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td><?=$notdata['first_name'].' '.$notdata['last_name']?></td>
                                             <td><?=$notdata['phone']?></td>
                                             <td><?=$notdata['room_number']?></td>
-                                            <td><?=$notdata['check_in']?></td>
-                                            <td><?=$notdata['check_out']?></td>
+                                            <td><?=date('M-d-Y',strtotime($notdata['check_in']))?></td>
+                                            <td><?=date('M-d-Y',strtotime($notdata['check_out']))?></td>
                                             <td><?=$notdata['total_discount']?></td>
                                             <td><?=$notdata['total_amount']?></td>
                                         </tr>
@@ -111,6 +113,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                             </div>
                             <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <a href="/dashboard/wprint"><i class="fas fa-print m-3"></i>Print</a>
                                 <div class="table-responsive">
                                     <table id="verified" class="table table-striped table-bordered table-hover text-nowrap">
                                     <thead>
@@ -130,8 +133,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td><?=$notdata['first_name'].' '.$notdata['last_name']?></td>
                                             <td><?=$notdata['phone']?></td>
                                             <td><?=$notdata['room_number']?></td>
-                                            <td><?=$notdata['check_in']?></td>
-                                            <td><?=$notdata['check_out']?></td>
+                                            <td><?=date('M-d-Y',strtotime($notdata['check_in']))?></td>
+                                            <td><?=date('M-d-Y',strtotime($notdata['check_out']))?></td>
                                             <td><?=$notdata['total_discount']?></td>
                                             <td><?=$notdata['total_amount']?></td>
                                         </tr>
@@ -141,6 +144,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                             </div>
                             <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                                <a href="/dashboard/mprint"><i class="fas fa-print m-3"></i>Print</a>
                                 <div class="table-responsive">
                                     <table id="arrived" class="table table-striped table-bordered table-hover text-nowrap">
                                         <thead>
@@ -160,8 +164,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td><?=$notdata['first_name'].' '.$notdata['last_name']?></td>
                                             <td><?=$notdata['phone']?></td>
                                             <td><?=$notdata['room_number']?></td>
-                                            <td><?=$notdata['check_in']?></td>
-                                            <td><?=$notdata['check_out']?></td>
+                                            <td><?=date('M-d-Y',strtotime($notdata['check_in']))?></td>
+                                            <td><?=date('M-d-Y',strtotime($notdata['check_out']))?></td>
                                             <td><?=$notdata['total_discount']?></td>
                                             <td><?=$notdata['total_amount']?></td>
                                         </tr>

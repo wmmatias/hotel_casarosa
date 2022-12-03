@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 $error = $this->session->flashdata('error');
-var_dump($_SESSION);
 ?>
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
             <div class="container-fluid">

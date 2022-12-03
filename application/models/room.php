@@ -41,7 +41,7 @@ class Room extends CI_Model {
 
     public function validate_creation() {
         $this->form_validation->set_error_delimiters('<div class="text-danger">','</div>');
-        $this->form_validation->set_rules('room_number', 'Room Number', 'required|numeric');
+        $this->form_validation->set_rules('room_number', 'Room Number', 'required');
         $this->form_validation->set_rules('room_name', 'Room Name', 'required');
         $this->form_validation->set_rules('room_type', 'Room Type', 'required');
         $this->form_validation->set_rules('room_rate', 'Room Rate', 'required|decimal');

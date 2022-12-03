@@ -13,25 +13,36 @@ $(document).ready(function() {
     });
     
     $('#upcoming').DataTable({
+        "order":[],
         "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
         "pageLength": 3,
         "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">'
     });
 
     $('#current').DataTable({
+        "order":[],
         "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
         "pageLength": 3,
         "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">'
     });
     $('#rooms').DataTable({
+        "order":[],
         "aLengthMenu": [[3, 5, 10, -1], [3, 5, 10, "All"]],
         "pageLength": 3,
         "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">'
     });
-    $('#datatable').DataTable();
-    $('#verified').DataTable();
-    $('#arrived').DataTable();
-    $('#yesterday').DataTable();
+    $('#datatable').DataTable({
+        "order":[]
+    });
+    $('#verified').DataTable({
+        "order":[]
+    });
+    $('#arrived').DataTable({
+        "order":[]
+    });
+    $('#yesterday').DataTable({
+        "order":[]
+    });
 
     var bed = document.getElementById('bed').value;
     var person = document.getElementById('person').value;

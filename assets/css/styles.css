@@ -357,3 +357,27 @@ button:hover {
     background-color: #e9ecef;
     opacity: 1;
 }
+
+
+@media print {
+
+    .subnavbar{
+        display: none;
+        visibility: hidden;
+    }
+    #log_off{
+        display: none;
+        visibility: hidden;
+    }
+    #bond{
+        border:none;
+    }
+    *{
+        font-size: small;
+    }
+
+    footer{
+        display: none;
+        visibility: hidden;
+    }
+}

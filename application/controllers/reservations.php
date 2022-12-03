@@ -109,12 +109,12 @@ class Reservations extends CI_Controller {
         else{
             $check = $this->reservation->check_double_reservation($form_data);
             if(empty($check)){
-                $this->session->set_flashdata('success', '<strong>Failed Reserve!</strong> Multiple Booking is not allowed.');
+                $this->session->set_flashdata('success', '<strong>Success Reserve!</strong>  Please verify your email.');
                 $this->reservation->create_reservation($form_data);
                 $this->load->view("partials/personal");
             }
             else{
-                $this->session->set_flashdata('warning', '<strong>You already reserve!</strong> Please verify your email.');
+                $this->session->set_flashdata('warning', '<strong>Failed Reserve!</strong> Multiple Booking is not allowed.');
                 $this->load->view("partials/personal");
             }
         }
@@ -141,7 +141,7 @@ class Reservations extends CI_Controller {
 
     public function arrived($id){
         $form_data = $this->input->post();
-        $this->reservation->arrived($id);
+        $this->reservation->arrived($id, $form_data);
         $no_guest = $this->reservation->no_guest_id($id);
         $this->reservation->add_inventory($no_guest);
         $this->reservation->add_sales($form_data);

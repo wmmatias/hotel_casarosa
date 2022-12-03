@@ -76,7 +76,7 @@ $check_out = date('Y-m-d', strtotime($arrived['check_out']));
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label for="pwd" class="form-label">PWD</label>
-                                    <input type="number" class="form-control" name="pwd" id="pwd" min="0" value="0" placeholder="PWD" value="" >
+                                    <input type="number" class="form-control" name="pwd" id="pwd" min="0" value="0" placeholder="PWD" autofocus>
                                     <?php echo form_error('pwd') ?>
                                 </div>
                                 <div class="col-md-4 mb-3">

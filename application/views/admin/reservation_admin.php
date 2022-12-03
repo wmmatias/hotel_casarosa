@@ -74,12 +74,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label for="pwd" class="form-label">PWD</label>
-                                    <input type="number" class="form-control" name="pwd" id="pwd" min="0" value="0" placeholder="PWD" value="" >
+                                    <input type="number" class="form-control" name="pwd" id="pwd" min="0" value="0" placeholder="PWD" readonly>
                                     <?php echo form_error('pwd') ?>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="senior" class="form-label">Senior Citizen</label>
-                                    <input type="number" class="form-control" name="senior" id="senior" min="0" value="0" placeholder="Senior" value="" >
+                                    <input type="number" class="form-control" name="senior" id="senior" min="0" value="0" placeholder="Senior" readonly>
                                     <?php echo form_error('senior') ?>
                                 </div>
                             </div>
