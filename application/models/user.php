@@ -16,9 +16,30 @@ class User extends CI_Model {
             $this->security->xss_clean($id)));
     }
 
+    function block_user($id)
+    {
+        $status = '1';
+        return $this->db->query("UPDATE users SET status = ?, updated_at = ? WHERE id = ?", 
+        array(
+            $this->security->xss_clean($status), 
+            $this->security->xss_clean(date("Y-m-d, H:i:s")),
+            $this->security->xss_clean($id)));
+    }
+
+    
+    function unblock_user($id)
+    {
+        $status = '0';
+        return $this->db->query("UPDATE users SET status = ?, updated_at = ? WHERE id = ?", 
+        array(
+            $this->security->xss_clean($status), 
+            $this->security->xss_clean(date("Y-m-d, H:i:s")),
+            $this->security->xss_clean($id)));
+    }
+
     function get_user_by_email($email)
     { 
-        $query = "SELECT * FROM users WHERE email=?";
+        $query = "SELECT * FROM users WHERE email=? and user_level != '3'";
         return $this->db->query($query, $this->security->xss_clean($email))->result_array()[0];
     }
 
@@ -124,18 +145,19 @@ class User extends CI_Model {
             $this->security->xss_clean($form_data['id'])));
     }
 
-    function validate_change_password($password = NULL) 
+    public function validate_change_password($form_data = NULL) 
     {
-        $this->form_validation->set_error_delimiters('<div>','</div>');
-        $this->form_validation->set_rules('old_password', 'Old Password', 'required');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');   
-        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');  
+        $this->form_validation->set_error_delimiters('<div class="text-danger">','</div>');
+        $this->form_validation->set_rules('current', 'Old Password', 'required');
+        $this->form_validation->set_rules('new', 'Password', 'required|min_length[8]');   
+        $this->form_validation->set_rules('cnew', 'Confirm Password', 'required|matches[new]');  
         
         if(!$this->form_validation->run()) {
             return validation_errors();
         }
-        else if(empty($this->check_password($password))){
-                return 'incorrect old password';
+        else if(empty($this->check_password($form_data))){
+            $this->session->set_flashdata('old_pass','<p class="text-danger">incorrect old password</p>');
+            return 'incorrect old password';
         }
     }
 
@@ -143,15 +165,15 @@ class User extends CI_Model {
          return $this->db->query("SELECT password FROM users WHERE id=? and password = ?", 
         array(
             $this->security->xss_clean($password['id']),
-            md5($this->security->xss_clean($password['old_password']))))->row_array(); 
+            md5($this->security->xss_clean($password['current']))))->row_array(); 
     }
 
 
-    function update_credentials($form_data) 
+    public function update_credentials($form_data) 
     {
         return $this->db->query("UPDATE users SET password = ?, updated_at = ? WHERE id = ?", 
         array(
-            md5($this->security->xss_clean($form_data['password'])), 
+            md5($this->security->xss_clean($form_data['new'])), 
             $this->security->xss_clean(date("Y-m-d, H:i:s")),
             $this->security->xss_clean($form_data['id'])));
     }

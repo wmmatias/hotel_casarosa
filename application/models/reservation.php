@@ -89,12 +89,11 @@ class Reservation extends CI_Model {
 
     public function get_current_guest(){
         $status = '2';
-        $query = ("SELECT reservations.first_name, reservations.last_name, reservations.phone, rooms.room_number, reservations.check_in, reservations.check_out,
-        sum(reservations.adult + reservations.children + reservations.x_person) as no_guest
+        $query = ("SELECT reservations.first_name, reservations.last_name, reservations.phone, rooms.room_number, reservations.check_in, reservations.check_out
         FROM fmitr_casarosa.reservations
         LEFT JOIN fmitr_casarosa.rooms
         ON reservations.room_id = rooms.id
-        WHERE status = ? AND DATE(`check_in`) = DATE(NOW())");
+        WHERE status = 2 AND DATE(`check_in`) = DATE(NOW())");
         $values = array(
             $this->security->xss_clean($status)
         );

@@ -358,6 +358,9 @@ button:hover {
     opacity: 1;
 }
 
+#change_pass{
+    right: 150px;
+}
 
 @media print {
 

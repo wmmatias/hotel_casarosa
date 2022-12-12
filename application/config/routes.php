@@ -65,6 +65,8 @@ $route['dashboard/kitchen'] = 'dashboard/kitchen';
 $route['dashboard/dashboard'] = 'dashboard';
 $route['dashboard/reservation_report'] = 'dashboard/reservation_report';
 $route['dashboard/inventory_report'] = 'dashboard/inventory_report';
+$route['dashboard/change_pass'] = 'dashboard/change_password';
+
 
 $route['rooms/validate'] = 'rooms/adding_rooms_proccess';
 $route['rooms/delete/(:any)'] = 'rooms/delete_rooms/$1';
@@ -72,8 +74,11 @@ $route['rooms/edit/(:any)'] = 'dashboard/rooms_edit/$1';
 
 $route['users/validate'] = 'users/adding_user_proccess';
 $route['users/delete/(:any)'] = 'users/delete_users/$1';
+$route['users/ban/(:any)'] = 'users/block_users/$1';
+$route['users/unban/(:any)'] = 'users/unblock_users/$1';
 $route['users/edit/(:any)'] = 'dashboard/employee_edit/$1';
 $route['users/validate_edit'] = 'users/edit_information_process';
+$route['users/credentials'] = 'users/edit_credentials';
 
 $route['reservations/validate'] = 'reservations/reserve_proccess';
 $route['reservations/show/(:any)'] = 'reservations/room_show/$1';

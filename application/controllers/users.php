@@ -47,7 +47,6 @@ class Users extends CI_Controller {
         {
             $email = $this->input->post('email');
             $user = $this->user->get_user_by_email($email);
-            
             $result = $this->user->validate_signin_match($user, $this->input->post('password'));
             
             if($result == "success") 
@@ -175,17 +174,22 @@ class Users extends CI_Controller {
         $checkpassword = $this->input->post();
         $result = $this->user->validate_change_password($checkpassword);
         if(!empty($result)) {
-            $this->session->set_flashdata('credentials_errors', $result);
-            redirect("users/edit");
+            $this->session->set_flashdata('errors', $result);
+            $this->load->view('templates/header');
+            $this->load->view('admin/change_password');
+            $this->load->view('templates/footer');
         } 
         else
         {  
             $form_data = $this->input->post();
             $this->user->update_credentials($form_data);
-            $this->session->set_flashdata('successc','your credential successfully update');
-            redirect("users/edit");
+            $this->session->set_flashdata('success','<strong>Successfully!</strong> Your credential successfully update');
+            $this->load->view('templates/header');
+            $this->load->view('admin/change_password');
+            $this->load->view('templates/footer');
         }
     }
+    
 
     public function delete_users($id) 
     {
@@ -193,6 +197,25 @@ class Users extends CI_Controller {
         $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully deleted '.$id.' to user');
         $this->user->log($this->session->userdata('user_id'));
         $this->session->set_flashdata('success', 'Successfully Deleted!');
+        redirect('/dashboard/employee');
+    }
+    
+
+    public function block_users($id) 
+    {
+        $this->user->block_user($id);
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully block '.$id.' to user');
+        $this->user->log($this->session->userdata('user_id'));
+        $this->session->set_flashdata('success', 'Successfully Block!');
+        redirect('/dashboard/employee');
+    }
+
+    public function unblock_users($id) 
+    {
+        $this->user->unblock_user($id);
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' successfully unblock '.$id.' to user');
+        $this->user->log($this->session->userdata('user_id'));
+        $this->session->set_flashdata('success', 'Successfully Unblock!');
         redirect('/dashboard/employee');
     }
     

@@ -85,7 +85,7 @@ $user = $this->session->userdata('auth') === true;
                                 </thead>
                                 <tbody>
 <?php                           foreach($datas as $data){
-?>                                    <tr>
+?>                                    <tr class="<?=($data['status'] === '1' ? 'bg-danger':'')?>">
                                         <td><?= $data['first_name'].' '.$data['last_name']?></td>
                                         <td><?= $data['email']?></td>
                                         <td>
@@ -99,7 +99,8 @@ $user = $this->session->userdata('auth') === true;
                                         <td>
 <?php                                       if($user){
 ?>                                              <a href="/users/edit/<?=$data['id']?>" class="text-xxsm btn btn-primary" tabindex="0" data-toggle="tooltip" data-original-title="Edit" data-placement="left"><i class="fas fa-pen"></i></a>
-                                                <a href="/users/delete/<?=$data['id']?>" onclick="return confirm('Are you sure you want to DELETE this?')" class="text-xxsm btn btn-danger" tabindex="0" data-toggle="tooltip" data-original-title="Delete" data-placement="left"><i class="fas fa-trash"></i></a>
+                                                <a href="/users/ban/<?=$data['id']?>" onclick="return confirm('Are you sure you want to Block this user?')" class="text-xxsm btn btn-danger <?=($data['status'] === '0' ? '':'d-none')?>" tabindex="0" data-toggle="tooltip" data-original-title="Block" data-placement="left"><i class="fas fa-ban"></i></a>
+                                                <a href="/users/unban/<?=$data['id']?>" onclick="return confirm('Are you sure you want to UnBlock this user?')" class="text-xxsm btn btn-success <?=($data['status'] === '1' ? '':'d-none')?>" tabindex="0" data-toggle="tooltip" data-original-title="UnBlock" data-placement="left"><i class="fas fa-check"></i></a>
 <?php                                       }
 ?>                                        </td>
 <?php                           }
@@ -107,6 +108,8 @@ $user = $this->session->userdata('auth') === true;
                                 </tbody>
                             </table>
                     </div>
+                    
+
                                     </div>
                                 </div>
                             </div>

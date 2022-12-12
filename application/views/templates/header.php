@@ -46,7 +46,10 @@ $fullname = $this->session->userdata('fullname');
         if(!$current_user_id) { 
         }
         else{
-?>        <a id="log_off" class="nav-link position-absolute end-0 me-3" href="/dashboard/signoff"><?=$fullname?> <i class="fas fa-power-off"></i></a>
+?>        <div class="position-absolute end-0 me-3">  
+            <a class="nav-link m-1 d-inline-block" href="/dashboard/change_pass">Change Password</i></a>
+            <a id="log_off" class="nav-link m-1 d-inline-block" href="/dashboard/signoff"><?=$fullname?> <i class="fas fa-power-off"></i></a>
+        </div>
 <?php
         }
 ?>    </nav>

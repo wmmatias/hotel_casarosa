@@ -43,6 +43,18 @@ class Dashboard extends CI_Controller {
             $this->load->view('admin/employee', $data);
             $this->load->view('templates/footer');
         }
+    } 
+    public function change_password() 
+    {   
+        $current_user_id = $this->session->userdata('user_id');
+        if(!$current_user_id) { 
+            redirect("users");
+        } 
+        else {
+            $this->load->view('templates/header');
+            $this->load->view('admin/change_password');
+            $this->load->view('templates/footer');
+        }
     }
 
     public function logs() 
