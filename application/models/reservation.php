@@ -42,7 +42,7 @@ class Reservation extends CI_Model {
         WHERE id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
-        WHERE  (check_in >= ? AND check_in < ? AND status != ?)
+        WHERE  (check_in >= ? AND check_in = ? AND status != ?)
 		    OR (check_out > ? AND check_out < ? AND status != ?)
 		    OR (check_in < ? AND check_out > ? AND status != ?))
         ORDER BY room_number ASC");
@@ -108,7 +108,7 @@ class Reservation extends CI_Model {
         WHERE id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
-        WHERE  (check_in >= ? AND check_in < ? AND status != ?)
+        WHERE  (check_in >= ? AND check_in = ? AND status != ?)
 		    OR (check_out > ? AND check_out < ? AND status != ?)
 		    OR (check_in < ? AND check_out > ? AND status != ?))
         ORDER BY room_number ASC");
@@ -177,7 +177,7 @@ class Reservation extends CI_Model {
         WHERE room_type = ? AND id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
-        WHERE  (check_in >= ? AND check_in < ? AND status != ?)
+        WHERE  (check_in >= ? AND check_in = ? AND status != ?)
 		    OR (check_out > ? AND check_out < ? AND status != ?)
 		    OR (check_in < ? AND check_out > ? AND status != ?))",
         array(
@@ -202,7 +202,7 @@ class Reservation extends CI_Model {
         WHERE id NOT IN 
         (SELECT room_id 
         FROM fmitr_casarosa.reservations
-        WHERE  (check_in >= ? AND check_in < ? AND status != ?)
+        WHERE  (check_in >= ? AND check_in = ? AND status != ?)
 		    OR (check_out > ? AND check_out < ? AND status != ?)
 		    OR (check_in < ? AND check_out > ? AND status != ?))",
         array(
