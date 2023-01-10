@@ -128,6 +128,7 @@ $user = $this->session->userdata('auth') === true;
 <?php                                   foreach($verified as $vdata){
 ?>                                        <tr>
                                             <td>
+                                                <a href="/reservations/cancel/<?=$vdata['id']?>" class="btn btn-danger">Cancel</a>
                                                 <a href="/reservations/edit/<?=$vdata['id']?>" class="btn btn-success">Check In</a>
                                             </td>
                                             <td><?=$vdata['first_name'].' '.$vdata['last_name']?></td>

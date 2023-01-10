@@ -358,6 +358,15 @@ class Reservation extends CI_Model {
             $this->security->xss_clean($id)));
     }
 
+    public function cancel_booking($id){
+        $status = '4';
+        return $this->db->query("UPDATE reservations SET status = ?, updated_at = ? WHERE id = ?", 
+        array(
+            $this->security->xss_clean($status), 
+            $this->security->xss_clean(date("Y-m-d H:i:s")),
+            $this->security->xss_clean($id)));
+    }
+
     public function no_guest_id($id){
         $query = ("SELECT id, sum(adult + children + x_person) as total_guest
         FROM fmitr_casarosa.reservations
@@ -501,7 +510,8 @@ class Reservation extends CI_Model {
 
     public function reservation_admin_create($form_data){
         $vkey = md5(time().$form_data['firstname']);
-        $query = "INSERT INTO reservations (room_id, first_name, last_name, phone, email, adult, children, x_bed, x_person, x_bfast, x_hour, check_in, check_out, vkey, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $stats ='1';
+        $query = "INSERT INTO reservations (room_id, first_name, last_name, phone, email, adult, children, x_bed, x_person, x_bfast, x_hour, check_in, check_out, vkey, status, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $values = array(
             $this->security->xss_clean($form_data['room_id']), 
             $this->security->xss_clean($form_data['firstname']), 
@@ -517,10 +527,11 @@ class Reservation extends CI_Model {
             $this->security->xss_clean($form_data['checkin']), 
             $this->security->xss_clean($form_data['checkout']), 
             $this->security->xss_clean($vkey), 
+            $this->security->xss_clean($stats), 
             $this->security->xss_clean(date("Y-m-d H:i:s")),
             $this->security->xss_clean(date("Y-m-d H:i:s"))
         ); 
-        $this->email->reservation_email($form_data, $vkey);
+        // $this->email->reservation_email($form_data, $vkey);
         $array_items = array('checkin', 'checkout', 'adult', 'children','roomtype');
         $this->session->unset_userdata($array_items);
         return $this->db->query($query, $values);

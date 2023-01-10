@@ -177,6 +177,14 @@ class Reservations extends CI_Controller {
         redirect('dashboard/reservation');
     }
 
+    public function cancel_booking($id){
+        $this->reservation->cancel_booking($id);
+        $this->session->set_userdata('activity', ''.$this->session->userdata('fullname').' cancel the booking of guest '.$id.'');
+        $this->user->log($this->session->userdata('user_id'));
+        $this->session->set_flashdata('check_out', 'The guest successfully cancel the booking!');
+        redirect('dashboard/reservation');
+    }
+
     public function edit_in($id){
         $arrived = $this->reservation->edit_checkin($id);
         $data = array('arrived'=>$arrived);

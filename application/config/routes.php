@@ -88,5 +88,6 @@ $route['reservation/check_out/(:any)'] = 'reservations/check_out/$1';
 $route['reservation/edit_in/(:any)'] = 'reservations/edit_in/$1';
 $route['reservations/check_availability'] = 'reservations/check_availability';
 $route['reservations/edit/(:any)'] = 'reservations/arrived_views/$1';
+$route['reservations/cancel/(:any)'] = 'reservations/cancel_booking/$1';
 $route['reservations/admin_booked/(:any)'] = 'reservations/admin_booked/$1';
 $route['reservations/admin_validate'] = 'reservations/admin_validate';

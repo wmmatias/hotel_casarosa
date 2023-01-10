@@ -9,8 +9,8 @@ class Email extends CI_Model {
       $name = $this->security->xss_clean($form_data['firstname']. ' '. $form_data['lastname']);
       $room_number = $this->security->xss_clean($form_data['room_number']);
       $to = $this->security->xss_clean($form_data['email']); 
-      $in = $this->security->xss_clean($form_data['checkin']); 
-      $out = $this->security->xss_clean($form_data['checkout']); 
+      $in = $this->security->xss_clean($form_data['check_in']); 
+      $out = $this->security->xss_clean($form_data['check_out']); 
       $subject = $this->security->xss_clean('Reservation Verification');
       $from = $this->security->xss_clean('casarosabnb04@gmail.com');
       $body = '
